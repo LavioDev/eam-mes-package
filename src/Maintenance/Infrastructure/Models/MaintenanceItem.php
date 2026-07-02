@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Modules\Equipment\Maintenance\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Equipment\Maintenance\Infrastructure\Builders\MaintenanceItemBuilder;
-use Modules\Equipment\Maintenance\Infrastructure\Factories\MaintenanceItemFactory;
 
 /**
  * @property int $id
@@ -22,7 +19,9 @@ use Modules\Equipment\Maintenance\Infrastructure\Factories\MaintenanceItemFactor
  */
 class MaintenanceItem extends Model
 {
-    use HasFactory, HasUuids;
+    protected $table = 'eamo_maintenance_items';
+
+    use HasUuids;
 
     protected $fillable = [
         'name',
@@ -30,18 +29,12 @@ class MaintenanceItem extends Model
         'maintenance_category_id'
     ];
 
-    protected static function newFactory(): MaintenanceItemFactory
-    {
-        return MaintenanceItemFactory::new();
-    }
+
 
     public function maintenanceCategory(): BelongsTo
     {
         return $this->belongsTo(MaintenanceCategory::class);
     }
 
-    public function newEloquentBuilder($query): MaintenanceItemBuilder
-    {
-        return new MaintenanceItemBuilder($query);
-    }
+
 }

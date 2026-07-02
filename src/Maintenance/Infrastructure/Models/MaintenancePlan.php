@@ -7,14 +7,11 @@ namespace Modules\Equipment\Maintenance\Infrastructure\Models;
 use App\Concerns\HasDefaultRouteBinding;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Date;
 use Modules\Core\User\Infrastructure\Models\User;
-use Modules\Equipment\Maintenance\Infrastructure\Builders\MaintenancePlanBuilder;
-use Modules\Equipment\Maintenance\Infrastructure\Factories\MaintenancePlanFactory;
 use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
 use Modules\Masterdata\Equipment\Infrastructure\Models\EquipmentError;
 
@@ -53,9 +50,7 @@ final class MaintenancePlan extends Model
     // }
 
     use HasUuids, HasDefaultRouteBinding;
-    /** @use HasFactory<MaintenancePlanFactory> */
-    use HasFactory;
-
+        
     protected $fillable = [
         'equipment_id',
         'date',
@@ -106,15 +101,9 @@ final class MaintenancePlan extends Model
 
     protected $keyType = 'string';
 
-    protected $table = 'maintenance_plans';
+    protected $table = 'eamo_maintenance_plans';
 
-    public function newEloquentBuilder($query): MaintenancePlanBuilder
-    {
-        return new MaintenancePlanBuilder($query);
-    }
 
-    protected static function newFactory(): MaintenancePlanFactory
-    {
-        return MaintenancePlanFactory::new();
-    }
+
+
 }

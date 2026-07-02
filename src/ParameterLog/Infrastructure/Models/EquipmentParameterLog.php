@@ -7,11 +7,8 @@ namespace Modules\Equipment\ParameterLog\Infrastructure\Models;
 use App\Concerns\HasDefaultRouteBinding;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Equipment\ParameterLog\Infrastructure\Builders\EquipmentParameterLogBuilder;
-use Modules\Equipment\ParameterLog\Infrastructure\Factories\EquipmentParameterLogFactory;
 use Modules\Masterdata\Unit\Infrastructure\Models\Unit;
 use Modules\Masterdata\Equipment\Infrastructure\Models\EquipmentParameter;
 use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
@@ -41,9 +38,7 @@ use Modules\Masterdata\Product\Infrastructure\Models\Product;
 final class EquipmentParameterLog extends Model
 {
     use HasUuids, HasDefaultRouteBinding;
-    /** @use HasFactory<EquipmentParameterLogFactory> */
-    use HasFactory;
-
+        
     protected $fillable = [
         'equipment_id',
         'equipment_parameter_id',
@@ -90,17 +85,11 @@ final class EquipmentParameterLog extends Model
 
     protected $keyType = 'string';
 
-    protected $table = 'equipment_parameter_logs';
+    protected $table = 'eamo_equipment_parameter_logs';
 
-    public function newEloquentBuilder($query): EquipmentParameterLogBuilder
-    {
-        return new EquipmentParameterLogBuilder($query);
-    }
 
-    protected static function newFactory(): EquipmentParameterLogFactory
-    {
-        return EquipmentParameterLogFactory::new();
-    }
+
+
 
     /**
      * @return HasOne<Unit, $this>

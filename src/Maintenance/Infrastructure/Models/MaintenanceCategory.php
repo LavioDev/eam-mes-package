@@ -6,10 +6,7 @@ namespace Modules\Equipment\Maintenance\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Equipment\Maintenance\Infrastructure\Builders\MaintenancePlanBuilder;
-use Modules\Equipment\Maintenance\Infrastructure\Factories\MaintenanceCategoryFactory;
 
 /**
  * @property int $id
@@ -20,7 +17,9 @@ use Modules\Equipment\Maintenance\Infrastructure\Factories\MaintenanceCategoryFa
  */
 class MaintenanceCategory extends Model
 {
-    use HasFactory, HasUuids;
+    protected $table = 'eamo_maintenance_categories';
+
+    use HasUuids;
 
     protected $fillable = [
         'name',
@@ -32,14 +31,8 @@ class MaintenanceCategory extends Model
         return $this->hasMany(MaintenancePlan::class, 'maintenance_category_id', 'id');
     }
 
-    protected static function newFactory(): MaintenanceCategoryFactory
-    {
-        return MaintenanceCategoryFactory::new();
-    }
 
 
-    public function newEloquentBuilder($query): MaintenancePlanBuilder
-    {
-        return new MaintenancePlanBuilder($query);
-    }
+
+
 }

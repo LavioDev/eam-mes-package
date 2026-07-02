@@ -9,12 +9,9 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Core\User\Infrastructure\Models\User;
-use Modules\Equipment\ErrorMonitoring\Infrastructure\Builders\EquipmentErrorLogBuilder;
-use Modules\Equipment\ErrorMonitoring\Infrastructure\Factories\EquipmentErrorLogFactory;
 use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
 use Modules\Masterdata\Equipment\Infrastructure\Models\EquipmentError;
 
@@ -45,9 +42,7 @@ final class EquipmentErrorLog extends Model
 
     public const MINIMUM_SECONDS_FOR_REAL_ERROR = 60;
 
-    /** @use HasFactory<EquipmentErrorLogFactory> */
-    use HasFactory;
-
+        
     public $timestamps = false;
 
     public $incrementing = false;
@@ -67,7 +62,7 @@ final class EquipmentErrorLog extends Model
 
     protected $keyType = 'string';
 
-    protected $table = 'equipment_error_logs';
+    protected $table = 'eamo_equipment_error_logs';
 
     public static function pruneExcess(): void
     {
@@ -141,10 +136,7 @@ final class EquipmentErrorLog extends Model
         return $this->belongsTo(User::class, 'handler_id', 'id');
     }
 
-    public function newEloquentBuilder($query): EquipmentErrorLogBuilder
-    {
-        return new EquipmentErrorLogBuilder($query);
-    }
+
 
     protected static function boot(): void
     {
@@ -157,10 +149,7 @@ final class EquipmentErrorLog extends Model
         });
     }
 
-    protected static function newFactory(): EquipmentErrorLogFactory
-    {
-        return EquipmentErrorLogFactory::new();
-    }
+
 
     protected function casts(): array
     {

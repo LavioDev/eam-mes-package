@@ -7,12 +7,10 @@ namespace Modules\Equipment\Maintenance\Infrastructure\Models;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Concerns\HasDefaultRouteBinding;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\File\Infrastructure\Models\ObjectFile;
-use Modules\Equipment\Maintenance\Infrastructure\Factories\MaintenanceLogFactory;
 use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
 
 /**
@@ -29,7 +27,9 @@ use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
  */
 final class MaintenanceLog extends Model
 {
-    use HasFactory, HasUuids, HasDefaultRouteBinding;
+    protected $table = 'eamo_maintenance_logs';
+
+    use HasUuids, HasDefaultRouteBinding;
 
     protected $fillable = [
         'maintenance_item_id',
@@ -56,13 +56,7 @@ final class MaintenanceLog extends Model
 
 
 
-    //     public function newEloquentBuilder($query): MaintenancePlanBuilder
-    // {
-    //     return new MaintenancePlanBuilder($query);
-    // }
 
-    protected static function newFactory(): MaintenanceLogFactory
-    {
-        return MaintenanceLogFactory::new();
-    }
+
+
 }

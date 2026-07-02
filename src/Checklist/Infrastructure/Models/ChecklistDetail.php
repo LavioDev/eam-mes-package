@@ -7,9 +7,7 @@ namespace Modules\Equipment\Checklist\Infrastructure\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Masterdata\Checklist\Infrastructure\Models\Checklist;
-use Modules\Equipment\Checklist\Infrastructure\Builders\ChecklistDetailBuilder;
 use App\Concerns\HasDefaultRouteBinding;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
@@ -28,7 +26,7 @@ final class ChecklistDetail extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $table = 'checklist_details';
+    protected $table = 'eamo_checklist_details';
 
     protected $fillable = [
         'checklist_id',
@@ -46,8 +44,5 @@ final class ChecklistDetail extends Model
         return $this->belongsTo(ChecklistSession::class, 'session_id'); // ✅ CORRECT
     }
 
-    public function newEloquentBuilder($query): ChecklistDetailBuilder
-    {
-        return new ChecklistDetailBuilder($query);
-    }
+
 }

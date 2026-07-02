@@ -6,11 +6,9 @@ namespace Modules\Equipment\Checklist\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Concerns\HasDefaultRouteBinding;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
-use Modules\Equipment\Checklist\Infrastructure\Builders\ChecklistSessionBuilder;
 use Modules\Equipment\Checklist\Infrastructure\Models\ChecklistDetail;
 
 /**
@@ -25,7 +23,7 @@ final class ChecklistSession extends Model
 {
     use HasUuids, HasDefaultRouteBinding;
 
-    protected $table = 'checklist_sessions';
+    protected $table = 'eamo_checklist_sessions';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -45,10 +43,7 @@ final class ChecklistSession extends Model
         return $this->belongsTo(Equipment::class, 'equipment_id');
     }
 
-    public function newEloquentBuilder($query): ChecklistSessionBuilder
-    {
-        return new ChecklistSessionBuilder($query);
-    }
+
 
     public function details()
     {

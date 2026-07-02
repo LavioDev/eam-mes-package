@@ -8,12 +8,9 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Concerns\HasDefaultRouteBinding;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Modules\Equipment\Maintenance\Infrastructure\Builders\MaintenanceScheduleBuilder;
-use Modules\Equipment\Maintenance\Infrastructure\Factories\MaintenanceScheduleFactory;
 use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
 
 /**
@@ -29,7 +26,9 @@ use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
  */
 final class MaintenanceSchedule extends Model
 {
-    use HasFactory, HasUuids, HasDefaultRouteBinding;
+    protected $table = 'eamo_maintenance_schedules';
+
+    use HasUuids, HasDefaultRouteBinding;
 
     protected $fillable = [
         'equipment_id',
@@ -66,13 +65,7 @@ final class MaintenanceSchedule extends Model
         return $this->hasMany(MaintenanceLog::class, 'maintenance_schedule_id');
     }
 
-    public function newEloquentBuilder($query): MaintenanceScheduleBuilder
-    {
-        return new MaintenanceScheduleBuilder($query);
-    }
 
-    protected static function newFactory(): MaintenanceScheduleFactory
-    {
-        return MaintenanceScheduleFactory::new();
-    }
+
+
 }

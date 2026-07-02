@@ -50,7 +50,7 @@ final class OperatingTime extends Model
         'date',
     ];
 
-    protected $table = 'operating_times';
+    protected $table = 'eamo_operating_times';
 
     protected $casts = [
         'date' => 'date',
