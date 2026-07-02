@@ -83,7 +83,7 @@ class EamMesPublishCommand extends Command
         $this->info("Publishing submodule: {$config['name']}...");
 
         // 1. Copy php files to modules/Equipment/<SubmoduleName>
-        $sourcePath = __DIR__ . '/../' . $config['source_dir'];
+        $sourcePath = __DIR__ . '/../Modules/Equipment/' . $config['source_dir'];
         $destPath = base_path('modules/Equipment/' . $config['name']);
 
         if (File::exists($sourcePath)) {
