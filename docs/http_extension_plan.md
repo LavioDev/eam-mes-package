@@ -101,6 +101,18 @@ Schema::create('eam_extension_requests', function (Blueprint $table) {
 }
 ```
 
+*   **Đặc tả các thuộc tính của cột trong `columns`**:
+
+| Trường | Kiểu dữ liệu | Yêu cầu | Mô tả |
+|---|---|---|---|
+| `name` | String | Bắt buộc | Tên cột cần tạo (regex: `/^[a-z][a-z0-9_]*$/`) |
+| `type` | String | Bắt buộc | Kiểu dữ liệu (ví dụ: `string`, `integer`, `boolean`, `text`, `json`, `decimal`...) |
+| `nullable` | Boolean | Tùy chọn | Cho phép cột có giá trị `NULL` hay không (mặc định: `true`) |
+| `default` | Mixed | Tùy chọn | Giá trị mặc định của cột (ví dụ: `false`, `"active"`, `10`...) |
+| `length` | Integer | Tùy chọn | Độ dài của cột (chỉ áp dụng khi `type` là `string`, mặc định: 255) |
+| `after` | String | Tùy chọn | Đặt cột mới sau tên cột đã chỉ định trong bảng |
+| `unsigned` | Boolean | Tùy chọn | Chỉ định kiểu số không âm (chỉ dùng cho `integer`, `bigInteger`...) |
+
 *   **Phản hồi thành công (202 Accepted)**:
 
 ```json
