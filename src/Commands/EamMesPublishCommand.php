@@ -17,8 +17,8 @@ class EamMesPublishCommand extends Command
         'checklist' => [
             'name' => 'Checklist',
             'migrations' => [
-                '2025_08_05_113903_eamo_create_checklist_details_table.php',
                 '2025_08_05_113908_eamo_create_checklist_sessions_table.php',
+                '2025_08_05_113910_eamo_create_checklist_details_table.php',
                 '2025_11_11_134736_eamo_create_operating_times_table.php',
             ],
             'source_dir' => 'Checklist',
@@ -33,11 +33,11 @@ class EamMesPublishCommand extends Command
         'maintenance' => [
             'name' => 'Maintenance',
             'migrations' => [
-                '2025_08_06_161253_eamo_create_maintenance_plans_table.php',
-                '2025_08_06_161336_eamo_create_maintenance_schedules_table.php',
-                '2025_08_06_162739_eamo_create_maintenance_items_table.php',
-                '2025_08_06_162801_eamo_create_maintenance_categories_table.php',
-                '2025_08_07_085425_eamo_create_maintenance_logs_table.php',
+                '2025_08_06_161000_eamo_create_maintenance_categories_table.php',
+                '2025_08_06_161100_eamo_create_maintenance_items_table.php',
+                '2025_08_06_161200_eamo_create_maintenance_plans_table.php',
+                '2025_08_06_161300_eamo_create_maintenance_schedules_table.php',
+                '2025_08_06_161400_eamo_create_maintenance_logs_table.php',
             ],
             'source_dir' => 'Maintenance',
         ],

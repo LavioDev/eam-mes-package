@@ -31,7 +31,8 @@
     "autoload": {
         "psr-4": {
             "Spatie\\LaravelPackageTools\\": "src",
-            "Modules\\Equipment\\": "src/Modules/Equipment"
+            "Modules\\Equipment\\": "src/Modules/Equipment",
+            "App\\": "src/App"
         }
     },
     "autoload-dev": {
