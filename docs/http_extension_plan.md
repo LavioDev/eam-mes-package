@@ -71,6 +71,13 @@ Schema::create('eam_extension_requests', function (Blueprint $table) {
 });
 ```
 
+> [!IMPORTANT]
+> **Yêu cầu cài đặt DB**: Trước khi sử dụng API này, bạn bắt buộc phải publish và chạy migration cho bảng `eam_extension_requests` của phân hệ cốt lõi (`core`) sang Host App:
+> ```bash
+> php artisan eam-mes:publish --submodule=core
+> php artisan migrate
+> ```
+
 ---
 
 ## 4. Chi Tiết API Endpoints

@@ -1,5 +1,7 @@
 <?php
 
+/** @var \Spatie\LaravelPackageTools\Tests\EamMesTestCase $this */
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Queue;

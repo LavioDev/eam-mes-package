@@ -1,5 +1,7 @@
 <?php
 
+/** @var \Spatie\LaravelPackageTools\Tests\EamMesTestCase $this */
+
 use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Tests\EamMesTestCase;
 
@@ -38,5 +40,5 @@ it('can publish all submodules', function () {
     expect(File::exists(base_path('modules/Equipment/ParameterLog/Register.php')))->toBeTrue();
 
     $migrationFiles = File::files(database_path('migrations'));
-    expect(count($migrationFiles))->toBe(10);
+    expect(count($migrationFiles))->toBe(11);
 });

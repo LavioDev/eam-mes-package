@@ -1,5 +1,7 @@
 <?php
 
+/** @var \Spatie\LaravelPackageTools\Tests\EamMesTestCase $this */
+
 use Illuminate\Support\Facades\Schema;
 use Spatie\LaravelPackageTools\Tests\EamMesTestCase;
 

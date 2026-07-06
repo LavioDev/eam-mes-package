@@ -334,16 +334,19 @@ erDiagram
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --all</span>
 
 <span class="cmt"># Hoặc chỉ publish từng phân hệ riêng lẻ để tinh chỉnh:</span>
-<span class="cmt"># 1. Phân hệ Checklist</span>
+<span class="cmt"># 1. Phân hệ Cốt lõi (Core - Chứa bảng lưu request API)</span>
+<span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=core</span>
+
+<span class="cmt"># 2. Phân hệ Checklist</span>
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=checklist</span>
 
-<span class="cmt"># 2. Phân hệ Giám sát lỗi (Error Monitoring)</span>
+<span class="cmt"># 3. Phân hệ Giám sát lỗi (Error Monitoring)</span>
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=error-monitoring</span>
 
-<span class="cmt"># 3. Phân hệ Bảo trì (Maintenance)</span>
+<span class="cmt"># 4. Phân hệ Bảo trì (Maintenance)</span>
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=maintenance</span>
 
-<span class="cmt"># 4. Phân hệ Ghi thông số (Parameter Log)</span>
+<span class="cmt"># 5. Phân hệ Ghi thông số (Parameter Log)</span>
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=parameter-log</span></div>
                             </div>
                         </div>

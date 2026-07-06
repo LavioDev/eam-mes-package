@@ -27,6 +27,7 @@ sản xuất (Manufacturing Execution System) và quản lý thiết bị (Equip
 
 | Submodule | Bảng DB | Chức năng |
 |---|---|---|
+| `core` | `eam_extension_requests` | Quản lý yêu cầu mở rộng bảng (bảng lưu request API) |
 | `checklist` | `eamo_checklist_sessions`, `eamo_checklist_details` | Quản lý kiểm tra thiết bị |
 | `error-monitoring` | `eamo_equipment_error_logs`, `eamo_operating_times` | Theo dõi lỗi thiết bị |
 | `maintenance` | `eamo_maintenance_plans`, `eamo_maintenance_schedules`, `eamo_maintenance_items`, `eamo_maintenance_categories`, `eamo_maintenance_logs` | Quản lý bảo trì |

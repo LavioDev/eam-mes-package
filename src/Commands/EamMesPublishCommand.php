@@ -8,12 +8,19 @@ use Illuminate\Support\Facades\File;
 class EamMesPublishCommand extends Command
 {
     protected $signature = 'eam-mes:publish 
-                            {--all : Publish all submodules}
-                            {--submodule= : Publish a specific submodule (checklist, error-monitoring, maintenance, parameter-log)}';
+                            {--all : Publish all submodules (including core)}
+                            {--submodule= : Publish a specific submodule (core, checklist, error-monitoring, maintenance, parameter-log)}';
 
     protected $description = 'Publish code files (models, actions, requests, routes) and migrations for EAM MES submodules to the main application';
 
     protected array $submodules = [
+        'core' => [
+            'name' => 'Core',
+            'migrations' => [
+                '2026_07_05_000000_create_eam_extension_requests_table.php',
+            ],
+            'source_dir' => '',
+        ],
         'checklist' => [
             'name' => 'Checklist',
             'migrations' => [
@@ -82,16 +89,18 @@ class EamMesPublishCommand extends Command
         $config = $this->submodules[$key];
         $this->info("Publishing submodule: {$config['name']}...");
 
-        // 1. Copy php files to modules/Equipment/<SubmoduleName>
-        $sourcePath = __DIR__ . '/../Modules/Equipment/' . $config['source_dir'];
-        $destPath = base_path('modules/Equipment/' . $config['name']);
+        // 1. Copy php files to modules/Equipment/<SubmoduleName> if source_dir is present
+        if ($config['source_dir']) {
+            $sourcePath = __DIR__ . '/../Modules/Equipment/' . $config['source_dir'];
+            $destPath = base_path('modules/Equipment/' . $config['name']);
 
-        if (File::exists($sourcePath)) {
-            File::ensureDirectoryExists(dirname($destPath));
-            File::copyDirectory($sourcePath, $destPath);
-            $this->line(" - Copied code files to [modules/Equipment/{$config['name']}]");
-        } else {
-            $this->warn(" - Source code directory not found at {$sourcePath}");
+            if (File::exists($sourcePath)) {
+                File::ensureDirectoryExists(dirname($destPath));
+                File::copyDirectory($sourcePath, $destPath);
+                $this->line(" - Copied code files to [modules/Equipment/{$config['name']}]");
+            } else {
+                $this->warn(" - Source code directory not found at {$sourcePath}");
+            }
         }
 
         // 2. Copy migrations to database/migrations

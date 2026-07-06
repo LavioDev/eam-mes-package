@@ -63,10 +63,11 @@ Use the publish command to copy models, actions, and routes for specific submodu
 php artisan eam-mes:publish --all
 
 # Publish a specific submodule
+php artisan eam-mes:publish --submodule=core
 php artisan eam-mes:publish --submodule=checklist
 ```
 
-Available submodules: `checklist`, `error-monitoring`, `maintenance`, `parameter-log`.
+Available submodules: `core`, `checklist`, `error-monitoring`, `maintenance`, `parameter-log`.
 
 ---
 
