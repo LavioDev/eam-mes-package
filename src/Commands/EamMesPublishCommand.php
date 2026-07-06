@@ -106,12 +106,14 @@ class EamMesPublishCommand extends Command
         // 2. Copy migrations to database/migrations
         $migrationsSourcePath = __DIR__ . '/../../database/migrations';
         $migrationsDestPath = database_path('migrations');
+        $baseTime = time();
 
-        foreach ($config['migrations'] as $migrationFile) {
+        foreach ($config['migrations'] as $index => $migrationFile) {
             $srcFile = $migrationsSourcePath . '/' . $migrationFile;
             if (File::exists($srcFile)) {
                 $cleanName = preg_replace('/^\d{4}_\d{2}_\d{2}_\d{6}_/', '', $migrationFile);
-                $destFile = $migrationsDestPath . '/' . date('Y_m_d_His') . '_' . $cleanName;
+                // Increment time by index seconds to preserve chronological ordering
+                $destFile = $migrationsDestPath . '/' . date('Y_m_d_His', $baseTime + $index) . '_' . $cleanName;
 
                 // Avoid duplicate publication if it contains the clean name
                 $exists = false;
