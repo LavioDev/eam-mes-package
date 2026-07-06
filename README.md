@@ -59,15 +59,17 @@ php artisan migrate
 Use the publish command to copy models, actions, and routes for specific submodules into your application:
 
 ```bash
-# Publish all submodules at once
+# Publish all submodules at once (including core, equipment, and masterdata-equipment)
 php artisan eam-mes:publish --all
 
 # Publish a specific submodule
 php artisan eam-mes:publish --submodule=core
 php artisan eam-mes:publish --submodule=checklist
+php artisan eam-mes:publish --submodule=equipment
+php artisan eam-mes:publish --submodule=masterdata-equipment
 ```
 
-Available submodules: `core`, `checklist`, `error-monitoring`, `maintenance`, `parameter-log`.
+Available submodules: `core`, `checklist`, `error-monitoring`, `maintenance`, `parameter-log`, `equipment`, `masterdata-equipment`.
 
 ---
 

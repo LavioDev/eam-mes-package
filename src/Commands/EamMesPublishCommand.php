@@ -9,7 +9,7 @@ class EamMesPublishCommand extends Command
 {
     protected $signature = 'eam-mes:publish 
                             {--all : Publish all submodules (including core)}
-                            {--submodule= : Publish a specific submodule (core, checklist, error-monitoring, maintenance, parameter-log)}';
+                            {--submodule= : Publish a specific submodule (core, checklist, error-monitoring, maintenance, parameter-log, equipment, masterdata-equipment)}';
 
     protected $description = 'Publish code files (models, actions, requests, routes) and migrations for EAM MES submodules to the main application';
 
@@ -28,14 +28,16 @@ class EamMesPublishCommand extends Command
                 '2025_08_05_113910_eamo_create_checklist_details_table.php',
                 '2025_11_11_134736_eamo_create_operating_times_table.php',
             ],
-            'source_dir' => 'Checklist',
+            'source_dir' => 'Equipment/Checklist',
+            'dest_dir' => 'modules/Equipment/Checklist',
         ],
         'error-monitoring' => [
             'name' => 'ErrorMonitoring',
             'migrations' => [
                 '2025_08_06_105535_eamo_create_equipment_error_logs_table.php',
             ],
-            'source_dir' => 'ErrorMonitoring',
+            'source_dir' => 'Equipment/ErrorMonitoring',
+            'dest_dir' => 'modules/Equipment/ErrorMonitoring',
         ],
         'maintenance' => [
             'name' => 'Maintenance',
@@ -46,14 +48,37 @@ class EamMesPublishCommand extends Command
                 '2025_08_06_161300_eamo_create_maintenance_schedules_table.php',
                 '2025_08_06_161400_eamo_create_maintenance_logs_table.php',
             ],
-            'source_dir' => 'Maintenance',
+            'source_dir' => 'Equipment/Maintenance',
+            'dest_dir' => 'modules/Equipment/Maintenance',
         ],
         'parameter-log' => [
             'name' => 'ParameterLog',
             'migrations' => [
                 '2025_08_06_102920_eamo_create_equipment_parameter_logs_table.php',
             ],
-            'source_dir' => 'ParameterLog',
+            'source_dir' => 'Equipment/ParameterLog',
+            'dest_dir' => 'modules/Equipment/ParameterLog',
+        ],
+        'equipment' => [
+            'name' => 'Equipment',
+            'migrations' => [
+                '2025_08_04_064327_eamo_create_iot_logs_table.php',
+                '2025_08_04_100000_eamo_seed_short_stop_equipment_error_for_iot_equipment.php',
+            ],
+            'source_dir' => 'Equipment/MasterData',
+            'dest_dir' => 'modules/Equipment/MasterData',
+        ],
+        'masterdata-equipment' => [
+            'name' => 'MasterdataEquipment',
+            'migrations' => [
+                '2025_06_23_084823_eamo_create_equipment_table.php',
+                '2025_07_03_095341_eamo_create_equipment_parameters_table.php',
+                '2025_07_03_102525_eamo_create_standard_parameters_table.php',
+                '2025_07_03_120000_eamo_create_equipment_errors_table.php',
+                '2025_08_04_092812_eamo_create_equipment_equipment_errors_table.php',
+            ],
+            'source_dir' => 'Masterdata/Equipment',
+            'dest_dir' => 'modules/Masterdata/Equipment',
         ],
     ];
 
@@ -89,15 +114,15 @@ class EamMesPublishCommand extends Command
         $config = $this->submodules[$key];
         $this->info("Publishing submodule: {$config['name']}...");
 
-        // 1. Copy php files to modules/Equipment/<SubmoduleName> if source_dir is present
-        if ($config['source_dir']) {
-            $sourcePath = __DIR__ . '/../Modules/Equipment/' . $config['source_dir'];
-            $destPath = base_path('modules/Equipment/' . $config['name']);
+        // 1. Copy php files if source_dir is present
+        if (!empty($config['source_dir'])) {
+            $sourcePath = __DIR__ . '/../Modules/' . $config['source_dir'];
+            $destPath = base_path($config['dest_dir'] ?? ('modules/Equipment/' . $config['name']));
 
             if (File::exists($sourcePath)) {
                 File::ensureDirectoryExists(dirname($destPath));
                 File::copyDirectory($sourcePath, $destPath);
-                $this->line(" - Copied code files to [modules/Equipment/{$config['name']}]");
+                $this->line(" - Copied code files to [{$config['dest_dir']}]");
             } else {
                 $this->warn(" - Source code directory not found at {$sourcePath}");
             }

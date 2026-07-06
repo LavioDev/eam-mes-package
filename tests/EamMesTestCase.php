@@ -21,5 +21,10 @@ class EamMesTestCase extends TestCase
             'database' => ':memory:',
             'prefix' => '',
         ]);
+        $app['config']->set('database.connections.pgsql_log', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
     }
 }

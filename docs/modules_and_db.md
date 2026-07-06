@@ -24,15 +24,112 @@ Package bao gồm 5 module con chính sau đây:
 - **Chức năng**: Ghi nhận các thông số vận hành theo thời gian thực của thiết bị (như nhiệt độ, áp suất, điện áp, tần số, v.v.) theo thời gian.
 - **Đường dẫn**: `src/ParameterLog/`
 
-### 1.5 Thingsboard
-- **Chức năng**: Tích hợp dữ liệu IoT trực tiếp từ nền tảng Thingsboard, cho phép package thu thập dữ liệu đo lường từ xa (telemetry) và đồng bộ hóa các hành động của thiết bị.
-- **Đường dẫn**: `src/Thingsboard/`
+### 1.5 Equipment (Quản lý Equipment)
+- **Chức năng**: Lớp quản lý hoạt động và ghi log thời gian thực (IoT logs, seeding lỗi dừng ngắn) cho các thiết bị.
+- **Đường dẫn**: `src/Equipment/MasterData/`
+
+### 1.6 Masterdata Equipment (Dữ liệu gốc Thiết bị)
+- **Chức năng**: Định nghĩa cấu trúc dữ liệu gốc của thiết bị (equipment), nhóm thiết bị (categories), thông số kỹ thuật (parameters), các ngưỡng tiêu chuẩn (standard parameters) và phân loại lỗi hệ thống (errors).
+- **Đường dẫn**: `src/Masterdata/Equipment/`
 
 ---
 
 ## 2. Sơ đồ Database (Mermaid ERD)
 
-Sơ đồ quan hệ dưới đây minh họa các bảng cơ sở dữ liệu được tạo bởi các file migration (tất cả các bảng đều sử dụng prefix `eamo_`):
+### 2.1 Master Data (Thiết bị & Thông số gốc)
+
+Sơ đồ quan hệ dưới đây mô tả cấu trúc dữ liệu gốc của thiết bị (được quản lý bởi module `masterdata-equipment` và `equipment`):
+
+```mermaid
+erDiagram
+    equipment ||--o| equipment_categories : "belongs to"
+    equipment ||--o{ equipment_parameters : "has"
+    equipment ||--o{ standard_parameters : "defines standards"
+    equipment ||--o{ equipment_equipment_errors : "pivot"
+    equipment_errors ||--o{ equipment_equipment_errors : "pivot"
+    equipment ||--o{ iot_logs : "records logs"
+
+    equipment {
+        string id PK
+        string code UK
+        string name
+        string process_id FK
+        string factory_id
+        boolean virtual_equipment
+        string equipment_category_id FK
+        string image_id
+        date date_imported
+        boolean state
+        string device_id
+        unsigned_integer assigned_productivity_per_hour
+        decimal assigned_machine_productivity_person
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    equipment_categories {
+        string id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    equipment_parameters {
+        string id PK
+        string code UK
+        string equipment_id FK
+        string product_category_id
+        string equipment_category_id
+        string unit_id
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    standard_parameters {
+        string id PK
+        string equipment_id FK
+        string equipment_parameter_id FK
+        decimal standard
+        decimal standard_max
+        decimal standard_min
+        string unit_id
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    equipment_errors {
+        string id PK
+        string name
+        text reason
+        text fix
+        text protection_measures
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    equipment_equipment_errors {
+        string equipment_id PK_FK
+        string equipment_error_id PK_FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    iot_logs {
+        bigint id PK
+        timestamptz ts
+        string type
+        jsonb data
+        string equipment_id FK
+        string work_center_id
+        string work_order_id
+    }
+```
+
+### 2.2 Operational Data (Checklist, Bảo trì, Lỗi & Log)
+
+Sơ đồ quan hệ dưới đây minh họa các bảng lưu trữ thông tin phát sinh định kỳ hoặc theo chu kỳ bảo trì, vận hành (tất cả các bảng đều sử dụng prefix `eamo_`):
 
 ```mermaid
 erDiagram

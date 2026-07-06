@@ -116,6 +116,8 @@
                     <li><strong>Error Monitoring (Giám sát lỗi máy - <code>src/ErrorMonitoring/</code>):</strong> Theo dõi thời gian dừng máy (downtime), thu nhận thông tin mã lỗi và tự động phân tích các chỉ số quản lý thiết bị quan trọng như OEE, MTBF, MTTR.</li>
                     <li><strong>Maintenance (Bảo trì vòng đời - <code>src/Maintenance/</code>):</strong> Cấu trúc danh mục bảo trì (categories), hạng mục chi tiết (items), quản lý kế hoạch tuần hoàn (plans), phân phối lịch trình (schedules) và ghi lại nhật ký thực thi (logs).</li>
                     <li><strong>Parameter Log (Ghi nhận thông số sensor - <code>src/ParameterLog/</code>):</strong> Hệ thống lưu trữ dữ liệu chuỗi thời gian (Timeseries) thu thập các thông số vận hành của thiết bị như nhiệt độ, áp suất, điện áp... trực tiếp từ các sensor.</li>
+                    <li><strong>Equipment (Quản lý Equipment - <code>src/Equipment/MasterData/</code>):</strong> Lớp quản lý hoạt động và ghi log thời gian thực (IoT logs, seeding lỗi dừng ngắn) cho các thiết bị.</li>
+                    <li><strong>Masterdata Equipment (Dữ liệu gốc Thiết bị - <code>src/Masterdata/Equipment/</code>):</strong> Định nghĩa cấu trúc dữ liệu gốc của thiết bị (equipment), nhóm thiết bị (categories), thông số kỹ thuật (parameters), các ngưỡng tiêu chuẩn (standard parameters) và phân loại lỗi hệ thống (errors).</li>
                 </ul>
 
                 <h2>Sơ đồ luồng phối hợp dữ liệu</h2>
@@ -148,28 +150,112 @@
                     </div>
                     <div class="code-content" style="color: #a1a1aa; line-height: 1.8;">laravel-project-root/
 ├── <span style="color: #38bdf8; font-weight: 600;">modules/</span>
-│   └── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span> <span class="cmt">(Vị trí lưu mã nguồn các submodules sau khi publish)</span>
-│       ├── <span style="color: #38bdf8; font-weight: 600;">Checklist/</span>
-│       │   ├── <span style="color: #38bdf8; font-weight: 600;">Actions/</span> <span class="cmt">(Xử lý nghiệp vụ tách biệt - Laravel Action)</span>
-│       │   ├── <span style="color: #38bdf8; font-weight: 600;">Models/</span> <span class="cmt">(Eloquent Model liên kết bảng eamo_*)</span>
-│       │   ├── <span style="color: #fbbf24;">Register.php</span> <span class="cmt">(Service Provider nội bộ của Checklist)</span>
-│       │   └── <span style="color: #fbbf24;">routes.php</span> <span class="cmt">(Khai báo các Router API nội bộ)</span>
-│       ├── <span style="color: #38bdf8; font-weight: 600;">ErrorMonitoring/</span>
-│       ├── <span style="color: #38bdf8; font-weight: 600;">Maintenance/</span>
-│       └── <span style="color: #38bdf8; font-weight: 600;">ParameterLog/</span>
+│   ├── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span> <span class="cmt">(Vị trí lưu mã nguồn các submodules sau khi publish)</span>
+│   │   ├── <span style="color: #38bdf8; font-weight: 600;">Checklist/</span>
+│   │   │   ├── <span style="color: #38bdf8; font-weight: 600;">Actions/</span> <span class="cmt">(Xử lý nghiệp vụ tách biệt - Laravel Action)</span>
+│   │   │   ├── <span style="color: #38bdf8; font-weight: 600;">Models/</span> <span class="cmt">(Eloquent Model liên kết bảng eamo_*)</span>
+│   │   │   ├── <span style="color: #fbbf24;">Register.php</span> <span class="cmt">(Service Provider nội bộ)</span>
+│   │   │   └── <span style="color: #fbbf24;">routes.php</span> <span class="cmt">(Khai báo các Router API nội bộ)</span>
+│   │   ├── <span style="color: #38bdf8; font-weight: 600;">ErrorMonitoring/</span>
+│   │   ├── <span style="color: #38bdf8; font-weight: 600;">Maintenance/</span>
+│   │   ├── <span style="color: #38bdf8; font-weight: 600;">ParameterLog/</span>
+│   │   └── <span style="color: #38bdf8; font-weight: 600;">MasterData/</span> <span class="cmt">(Quản lý IoT logs & seeding lỗi dừng ngắn)</span>
+│   └── <span style="color: #38bdf8; font-weight: 600;">Masterdata/</span>
+│       └── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span> <span class="cmt">(Dữ liệu gốc Thiết bị: equipment, categories, parameters, errors)</span>
 ├── <span style="color: #38bdf8; font-weight: 600;">database/</span>
 │   └── <span style="color: #38bdf8; font-weight: 600;">migrations/</span> <span class="cmt">(Các file migration của package được copy sang đây)</span>
-│       ├── <span style="color: #fbbf24;">2026_07_05_000001_create_eamo_checklist_sessions_table.php</span>
-│       ├── <span style="color: #fbbf24;">2026_07_05_000002_create_eamo_checklist_details_table.php</span>
-│       └── <span style="color: #fbbf24;">2026_07_05_000003_create_eamo_maintenance_tables.php</span>
+│       ├── <span style="color: #fbbf24;">2025_06_23_084823_eamo_create_equipment_table.php</span>
+│       ├── <span style="color: #fbbf24;">2025_07_03_095341_eamo_create_equipment_parameters_table.php</span>
+│       └── <span style="color: #fbbf24;">2025_08_05_113908_eamo_create_checklist_sessions_table.php</span>
 └── <span style="color: #38bdf8; font-weight: 600;">config/</span>
     └── <span style="color: #fbbf24;">eam.php</span> <span class="cmt">(Cấu hình chính: prefix, whitelist, routes, extensions)</span></div>
                 </div>
 
                 <h2>Sơ đồ cơ sở dữ liệu chi tiết (Database Schema ERD)</h2>
-                <p>Hệ thống mặc định tạo ra 10 bảng dữ liệu cốt lõi sử dụng chung tiền tố <code>eamo_</code>:</p>
+                <p>Hệ thống chia làm hai lớp dữ liệu độc lập: Dữ liệu gốc (Master Data) và Dữ liệu vận hành (Operational Data):</p>
+                
+                <h3>1. Dữ liệu gốc (Master Data - Thiết bị &amp; Cấu hình)</h3>
                 <div class="diagram-box">
-                    <div class="diagram-title">Mô hình quan hệ cơ sở dữ liệu (Mermaid ERD Vector)</div>
+                    <div class="diagram-title">Mô hình dữ liệu gốc Thiết bị (Mermaid ERD)</div>
+                    <pre class="mermaid" style="background: transparent; border: none; overflow-x: auto; display: flex; justify-content: center;">
+erDiagram
+    equipment ||--o| equipment_categories : "belongs to"
+    equipment ||--o{ equipment_parameters : "has"
+    equipment ||--o{ standard_parameters : "defines standards"
+    equipment ||--o{ equipment_equipment_errors : "pivot"
+    equipment_errors ||--o{ equipment_equipment_errors : "pivot"
+    equipment ||--o{ iot_logs : "records logs"
+
+    equipment {
+        string id PK
+        string code UK
+        string name
+        string process_id FK
+        string factory_id
+        boolean virtual_equipment
+        string equipment_category_id FK
+        string image_id
+        date date_imported
+        boolean state
+        string device_id
+        unsigned_integer assigned_productivity_per_hour
+        decimal assigned_machine_productivity_person
+        boolean is_active
+    }
+
+    equipment_categories {
+        string id PK
+        string name
+    }
+
+    equipment_parameters {
+        string id PK
+        string code UK
+        string equipment_id FK
+        string product_category_id
+        string equipment_category_id
+        string unit_id
+        string name
+    }
+
+    standard_parameters {
+        string id PK
+        string equipment_id FK
+        string equipment_parameter_id FK
+        decimal standard
+        decimal standard_max
+        decimal standard_min
+        string unit_id
+    }
+
+    equipment_errors {
+        string id PK
+        string name
+        text reason
+        text fix
+        text protection_measures
+    }
+
+    equipment_equipment_errors {
+        string equipment_id PK_FK
+        string equipment_error_id PK_FK
+    }
+
+    iot_logs {
+        bigint id PK
+        timestamptz ts
+        string type
+        jsonb data
+        string equipment_id FK
+        string work_center_id
+        string work_order_id
+    }
+                    </pre>
+                </div>
+
+                <h3>2. Dữ liệu vận hành (Operational Data - Checklist, Bảo trì, Lỗi phát sinh)</h3>
+                <div class="diagram-box" style="margin-top: 16px;">
+                    <div class="diagram-title">Mô hình dữ liệu vận hành &amp; logs (Mermaid ERD)</div>
                     <pre class="mermaid" style="background: transparent; border: none; overflow-x: auto; display: flex; justify-content: center;">
 erDiagram
     eamo_checklist_sessions ||--o{ eamo_checklist_details : "has"
@@ -330,11 +416,11 @@ erDiagram
                                     <span>Bash</span>
                                     <button class="btn-copy" onclick="copySnippet('code-publish-submodules')">Copy</button>
                                 </div>
-                                <div class="code-content" id="code-publish-submodules"><span class="cmt"># Publish toàn bộ 4 phân hệ cùng lúc</span>
+                                <div class="code-content" id="code-publish-submodules"><span class="cmt"># Publish toàn bộ các phân hệ cùng lúc (bao gồm core, equipment, masterdata-equipment)</span>
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --all</span>
 
 <span class="cmt"># Hoặc chỉ publish từng phân hệ riêng lẻ để tinh chỉnh:</span>
-<span class="cmt"># 1. Phân hệ Cốt lõi (Core - Chứa bảng lưu request API)</span>
+<span class="cmt"># 1. Phân hệ Cốt lõi (Core)</span>
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=core</span>
 
 <span class="cmt"># 2. Phân hệ Checklist</span>
@@ -347,7 +433,13 @@ erDiagram
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=maintenance</span>
 
 <span class="cmt"># 5. Phân hệ Ghi thông số (Parameter Log)</span>
-<span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=parameter-log</span></div>
+<span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=parameter-log</span>
+
+<span class="cmt"># 6. Phân hệ Quản lý Thiết bị (Equipment)</span>
+<span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=equipment</span>
+
+<span class="cmt"># 7. Phân hệ Dữ liệu gốc Thiết bị (Masterdata Equipment)</span>
+<span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=masterdata-equipment</span></div>
                             </div>
                         </div>
                     </div>
@@ -455,6 +547,174 @@ erDiagram
                             <td><span class="badge-method post">POST</span></td>
                             <td><code class="api-path">/v1/equipment/equipment-parameter/logs/save</code></td>
                             <td>Lưu hàng loạt thông số vận hành (áp suất, nhiệt độ...)</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <!-- Equipment CRUD -->
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment</code></td>
+                            <td>Lấy danh sách các thiết bị máy móc</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method post">POST</span></td>
+                            <td><code class="api-path">/v1/equipment</code></td>
+                            <td>Đăng ký thiết bị máy móc mới</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment/{id}</code></td>
+                            <td>Lấy chi tiết thông tin thiết bị máy móc</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method put">PUT</span></td>
+                            <td><code class="api-path">/v1/equipment/{id}</code></td>
+                            <td>Cập nhật thông tin thiết bị máy móc</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method delete">DELETE</span></td>
+                            <td><code class="api-path">/v1/equipment/{id}</code></td>
+                            <td>Xóa thông tin thiết bị máy móc</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <!-- Equipment Categories CRUD -->
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment-categories</code></td>
+                            <td>Lấy danh sách các nhóm thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method post">POST</span></td>
+                            <td><code class="api-path">/v1/equipment-categories</code></td>
+                            <td>Đăng ký nhóm thiết bị mới</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment-categories/{id}</code></td>
+                            <td>Lấy chi tiết thông tin nhóm thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method put">PUT</span></td>
+                            <td><code class="api-path">/v1/equipment-categories/{id}</code></td>
+                            <td>Cập nhật thông tin nhóm thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method delete">DELETE</span></td>
+                            <td><code class="api-path">/v1/equipment-categories/{id}</code></td>
+                            <td>Xóa thông tin nhóm thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <!-- Equipment Parameters CRUD -->
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment-parameters</code></td>
+                            <td>Lấy danh sách các thông số thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method post">POST</span></td>
+                            <td><code class="api-path">/v1/equipment-parameters</code></td>
+                            <td>Đăng ký thông số thiết bị mới</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment-parameters/{id}</code></td>
+                            <td>Lấy chi tiết thông số thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method put">PUT</span></td>
+                            <td><code class="api-path">/v1/equipment-parameters/{id}</code></td>
+                            <td>Cập nhật thông số thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method delete">DELETE</span></td>
+                            <td><code class="api-path">/v1/equipment-parameters/{id}</code></td>
+                            <td>Xóa thông số thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <!-- Standard Parameters CRUD -->
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/standard-parameters</code></td>
+                            <td>Lấy danh sách các ngưỡng tiêu chuẩn thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method post">POST</span></td>
+                            <td><code class="api-path">/v1/standard-parameters</code></td>
+                            <td>Đăng ký ngưỡng tiêu chuẩn thiết bị mới</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/standard-parameters/{id}</code></td>
+                            <td>Lấy chi tiết ngưỡng tiêu chuẩn thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method put">PUT</span></td>
+                            <td><code class="api-path">/v1/standard-parameters/{id}</code></td>
+                            <td>Cập nhật ngưỡng tiêu chuẩn thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method delete">DELETE</span></td>
+                            <td><code class="api-path">/v1/standard-parameters/{id}</code></td>
+                            <td>Xóa ngưỡng tiêu chuẩn thiết bị</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <!-- Equipment Errors CRUD -->
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment-errors</code></td>
+                            <td>Lấy danh sách cấu hình lỗi hệ thống</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method post">POST</span></td>
+                            <td><code class="api-path">/v1/equipment-errors</code></td>
+                            <td>Đăng ký cấu hình lỗi mới</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/equipment-errors/{id}</code></td>
+                            <td>Lấy chi tiết cấu hình lỗi</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method put">PUT</span></td>
+                            <td><code class="api-path">/v1/equipment-errors/{id}</code></td>
+                            <td>Cập nhật cấu hình lỗi</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method delete">DELETE</span></td>
+                            <td><code class="api-path">/v1/equipment-errors/{id}</code></td>
+                            <td>Xóa cấu hình lỗi</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <!-- IoT Logs -->
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/iot-logs</code></td>
+                            <td>Lấy danh sách log vận hành thiết bị gửi từ IoT/Sensor</td>
+                            <td>auth:api</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method get">GET</span></td>
+                            <td><code class="api-path">/v1/iot-logs/{id}</code></td>
+                            <td>Lấy chi tiết log vận hành thiết bị</td>
                             <td>auth:api</td>
                         </tr>
                     </tbody>

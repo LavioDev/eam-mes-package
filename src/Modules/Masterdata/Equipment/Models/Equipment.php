@@ -1,0 +1,112 @@
+﻿<?php
+
+declare(strict_types=1);
+
+namespace Modules\Masterdata\Equipment\Models;
+
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+/**
+ * Class Equipment
+ *
+ * @property string $id
+ * @property string|null $name
+ * @property string $code
+ * @property string|null $process_id
+ * @property string $work_center_id
+ * @property string|null $factory_id
+ * @property string|null $equipment_category_id
+ * @property string|null $device_id
+ * @property int|null $assigned_productivity_per_hour
+ * @property string|null $assigned_machine_productivity_person
+ * @property string|null $image_id
+ * @property bool $is_active
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable $updated_at
+ */
+final class Equipment extends Model
+{
+    use HasUuids;
+
+    public $incrementing = false;
+
+    protected $fillable = [
+        'name',
+        'code',
+        'process_id',
+        'work_center_id',
+        'factory_id',
+        'equipment_category_id',
+        'device_id',
+        'assigned_productivity_per_hour',
+        'assigned_machine_productivity_person',
+        'image_id',
+        'is_active'
+    ];
+
+    protected $keyType = 'string';
+
+    protected $table = 'equipment';
+
+    /**
+     * @return BelongsTo<EquipmentCategory, $this>
+     */
+    public function equipmentCategory(): BelongsTo
+    {
+        return $this->belongsTo(EquipmentCategory::class);
+    }
+
+    /**
+     * @return HasMany<EquipmentParameter, $this>
+     */
+    public function equipmentParameters(): HasMany
+    {
+        return $this->hasMany(EquipmentParameter::class);
+    }
+
+    /**
+     * @return BelongsToMany<EquipmentError, $this>
+     */
+    public function equipmentErrors(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            EquipmentError::class,
+            'equipment_equipment_errors',
+            'equipment_id',
+            'equipment_error_id'
+        )->withTimestamps();
+    }
+
+    /**
+     * @return HasMany<StandardParameter, $this>
+     */
+    public function standardParameters(): HasMany
+    {
+        return $this->hasMany(StandardParameter::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::deleting(function (self $model) {
+            $model->equipmentParameters()->delete();
+            $model->standardParameters()->delete();
+        });
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'assigned_productivity_per_hour' => 'integer',
+            'assigned_machine_productivity_person' => 'decimal:2',
+            'is_active' => 'boolean',
+        ];
+    }
+}
+
