@@ -10,9 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('eamo_maintenance_items', function (Blueprint $table) {
+        Schema::create('eamo_maintenance_categories', function (Blueprint $table) {
             $table->string('id', 36)->primary();
-            $table->string('maintenance_category_id', 36);
             $table->string('name');
             $table->string('description')->nullable();
             $table->timestamps();
@@ -24,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('eamo_maintenance_items');
+        Schema::dropIfExists('eamo_maintenance_categories');
     }
 };

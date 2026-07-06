@@ -94,6 +94,9 @@
                         <li class="submenu-item">
                             <a href="#" class="submenu-link" onclick="showView('view-schema-gen', this)">Trình sinh Code</a>
                         </li>
+                        <li class="submenu-item">
+                            <a href="#" class="submenu-link" onclick="showView('view-schema-api-gen', this)">Trình sinh qua API</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -271,13 +274,31 @@ erDiagram
                         <div class="step-marker">1</div>
                         <div class="step-item-body">
                             <div class="step-item-title">Cài đặt gói Package</div>
-                            <p>Sử dụng composer để cài đặt package từ repository của doanh nghiệp:</p>
+                            <p>Thêm khai báo repository và yêu cầu gói vào tệp <code>composer.json</code> của bạn:</p>
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>composer.json</span>
+                                    <button class="btn-copy" onclick="copySnippet('code-composer-json')">Copy</button>
+                                </div>
+                                <pre class="code-content" id="code-composer-json" style="padding: 16px; margin: 0; white-space: pre; font-family: var(--font-mono); font-size: 13px;">{
+    <span class="str">"repositories"</span>: [
+        {
+            <span class="str">"type"</span>: <span class="str">"vcs"</span>,
+            <span class="str">"url"</span>: <span class="str">"https://github.com/LavioDev/eam-mes-package"</span>
+        }
+    ],
+    <span class="str">"require"</span>: {
+        <span class="str">"laviodev/eam-mes-package"</span>: <span class="str">"dev-main"</span>
+    }
+}</pre>
+                            </div>
+                            <p style="margin-top: 12px; margin-bottom: 8px;">Sau đó chạy lệnh cập nhật để cài đặt:</p>
                             <div class="code-container">
                                 <div class="code-header">
                                     <span>Bash</span>
-                                    <button class="btn-copy" onclick="copySnippet('code-composer')">Copy</button>
+                                    <button class="btn-copy" onclick="copySnippet('code-composer-update')">Copy</button>
                                 </div>
-                                <div class="code-content" id="code-composer"><span class="kw">composer require</span> <span class="str">laviodev/eam-mes-package</span></div>
+                                <div class="code-content" id="code-composer-update"><span class="kw">composer update</span> <span class="str">laviodev/eam-mes-package</span></div>
                             </div>
                         </div>
                     </div>
@@ -661,6 +682,56 @@ Content-Type: application/json
                             <button class="btn-copy" onclick="copyGenCodeToClipboard()">Copy PHP Class</button>
                         </div>
                         <pre class="code-content" id="output-generator-code" style="flex-grow:1; min-height:400px; min-width: 0; box-sizing: border-box;"></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: SCHEMA - API CODE GENERATOR -->
+            <section id="view-schema-api-gen" class="view-panel">
+                <h1>Trình sinh trường qua API (API Request Generator)</h1>
+                <p>Cấu hình bảng mục tiêu và các cột mở rộng để tự động sinh Payload JSON hoặc lệnh CURL thực hiện yêu cầu qua API Endpoint:</p>
+
+                <div class="gen-layout">
+                    <!-- Left Config Form -->
+                    <div class="gen-sidebar">
+                        <div class="gen-form-group">
+                            <label for="input-api-table">Bảng cơ sở dữ liệu đích:</label>
+                            <select id="input-api-table" class="gen-form-control" onchange="runApiCodeGenerator()">
+                                <option value="eamo_maintenance_plans">eamo_maintenance_plans</option>
+                                <option value="eamo_maintenance_schedules">eamo_maintenance_schedules</option>
+                                <option value="eamo_checklist_sessions">eamo_checklist_sessions</option>
+                                <option value="eamo_equipment_error_logs">eamo_equipment_error_logs</option>
+                                <option value="eamo_equipment_parameter_logs">eamo_equipment_parameter_logs</option>
+                            </select>
+                        </div>
+
+                        <div class="gen-form-group">
+                            <label for="input-api-url">API Endpoint URL:</label>
+                            <input type="text" id="input-api-url" class="gen-form-control" value="http://your-app.test/eam/api/extensions" oninput="runApiCodeGenerator()">
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid var(--border-muted); margin: 12px 0;">
+                        
+                        <div style="margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size: 11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Danh sách cột</span>
+                            <button class="btn-secondary" style="padding: 4px 8px; margin-bottom: 0;" onclick="addNewColumnToApiGenerator()">+ Thêm cột</button>
+                        </div>
+
+                        <div id="gen-api-columns-list">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right IDE Preview -->
+                    <div class="code-container" style="margin: 0; display:flex; flex-direction:column;">
+                        <div class="code-header">
+                            <div style="display:flex; gap:16px;">
+                                <span id="ide-api-tab-json" class="active-tab" style="cursor:pointer; color:#ffffff;" onclick="switchApiTab('json')">payload.json</span>
+                                <span id="ide-api-tab-curl" style="cursor:pointer; color:#a1a1aa;" onclick="switchApiTab('curl')">curl_request.sh</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyApiCodeToClipboard()">Copy to Clipboard</button>
+                        </div>
+                        <pre class="code-content" id="output-api-generator-code" style="flex-grow:1; min-height:400px; min-width: 0; box-sizing: border-box;"></pre>
                     </div>
                 </div>
             </section>

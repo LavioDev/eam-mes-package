@@ -12,14 +12,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('eamo_checklist_details', function (Blueprint $table) {
-            $table->string('id',36)->primary();
-            $table->string('checklist_id',36);
-            $table->string('session_id',36);
+            $table->string('id', 36)->primary();
+            $table->string('checklist_id', 36);
+            $table->string('session_id', 36);
 
             $table->string('description')->nullable(); 
-            $table->enum('result',['pass','fail'])->nullable();
+            $table->enum('result', ['pass', 'fail'])->nullable();
             // $table->json('image_ids')->nullable();
             $table->timestamps();
+
+            $table->foreign('session_id')
+                ->references('id')
+                ->on('eamo_checklist_sessions')
+                ->cascadeOnDelete();
         });
     }
 

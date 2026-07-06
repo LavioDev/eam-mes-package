@@ -719,3 +719,10 @@ tr:nth-child(even) td {
 .github-link:hover .github-icon {
     color: var(--color-accent) !important;
 }
+
+/* Style for generator preview tabs */
+.code-header span.active-tab {
+    color: #ffffff !important;
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 2px;
+}

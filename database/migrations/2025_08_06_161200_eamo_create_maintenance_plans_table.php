@@ -26,6 +26,12 @@ return new class extends Migration {
             $table->string('maintenance_category_id', 36)->nullable();
             $table->string('user_id', 36)->nullable();
             $table->timestamps();
+
+            $table->foreign('maintenance_category_id')
+                ->references('id')
+                ->on('eamo_maintenance_categories')
+                ->nullOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
