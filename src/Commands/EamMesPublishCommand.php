@@ -60,13 +60,13 @@ class EamMesPublishCommand extends Command
             'dest_dir' => 'modules/Equipment/ParameterLog',
         ],
         'equipment' => [
-            'name' => 'Equipment',
+            'name' => 'Management',
             'migrations' => [
                 '2025_08_04_064327_eamo_create_iot_logs_table.php',
                 '2025_08_04_100000_eamo_seed_short_stop_equipment_error_for_iot_equipment.php',
             ],
-            'source_dir' => 'Equipment/MasterData',
-            'dest_dir' => 'modules/Equipment/MasterData',
+            'source_dir' => 'Equipment/Management',
+            'dest_dir' => 'modules/Equipment/Management',
         ],
         'masterdata-equipment' => [
             'name' => 'MasterdataEquipment',
@@ -164,3 +164,5 @@ class EamMesPublishCommand extends Command
         $this->info("Submodule {$config['name']} published successfully.");
     }
 }
+
+

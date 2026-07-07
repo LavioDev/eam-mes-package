@@ -8,33 +8,31 @@ use Modules\Masterdata\Equipment\Models\EquipmentCategory;
 use Modules\Masterdata\Equipment\Models\EquipmentError;
 use Modules\Masterdata\Equipment\Models\EquipmentParameter;
 use Modules\Masterdata\Equipment\Models\StandardParameter;
-use Modules\Masterdata\Equipment\Actions\DeleteEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\DeleteEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\DeleteEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\DeleteEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\DeleteStandardParameterAction;
-use Modules\Masterdata\Equipment\Actions\IndexEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\IndexEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\IndexEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\IndexEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\IndexIotLogAction;
-use Modules\Masterdata\Equipment\Actions\IndexStandardParameterAction;
-use Modules\Masterdata\Equipment\Actions\ShowEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\ShowEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\ShowEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\ShowEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\ShowIotLogAction;
-use Modules\Masterdata\Equipment\Actions\ShowStandardParameterAction;
-use Modules\Masterdata\Equipment\Actions\StoreEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\StoreEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\StoreEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\StoreEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\StoreStandardParameterAction;
-use Modules\Masterdata\Equipment\Actions\UpdateEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\UpdateEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\UpdateEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\UpdateEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\UpdateStandardParameterAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\DeleteEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\DeleteEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\DeleteEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\DeleteEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\StandardParameter\DeleteStandardParameterAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\IndexEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\IndexEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\IndexEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\IndexEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\StandardParameter\IndexStandardParameterAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\ShowEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\ShowEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\ShowEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\ShowEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\StandardParameter\ShowStandardParameterAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\StoreEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\StoreEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\StoreEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\StoreEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\StandardParameter\StoreStandardParameterAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\UpdateEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\UpdateEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\UpdateEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\UpdateEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\StandardParameter\UpdateStandardParameterAction;
 
 Route::group([], function (): void {
     Route::prefix('v1/equipment')->name('equipment.')->group(function (): void {
@@ -87,8 +85,5 @@ Route::group([], function (): void {
             ->name('destroy');
     });
 
-    Route::prefix('v1/iot-logs')->name('iot-logs.')->group(function (): void {
-        Route::get('/', IndexIotLogAction::class)->name('index');
-        Route::get('/{id}', ShowIotLogAction::class)->name('show');
-    });
 });
+

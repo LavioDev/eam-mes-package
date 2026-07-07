@@ -34,8 +34,8 @@ it('can publish a specific submodule equipment', function () {
         '--submodule' => 'equipment',
     ])->assertSuccessful();
 
-    expect(File::exists(base_path('modules/Equipment/MasterData/Register.php')))->toBeTrue();
-    expect(File::exists(base_path('modules/Equipment/MasterData/routes.php')))->toBeTrue();
+    expect(File::exists(base_path('modules/Equipment/Management/Register.php')))->toBeTrue();
+    expect(File::exists(base_path('modules/Equipment/Management/routes.php')))->toBeTrue();
 
     $migrationFiles = File::files(database_path('migrations'));
     expect(count($migrationFiles))->toBe(2);
@@ -62,9 +62,11 @@ it('can publish all submodules', function () {
     expect(File::exists(base_path('modules/Equipment/ErrorMonitoring/Register.php')))->toBeTrue();
     expect(File::exists(base_path('modules/Equipment/Maintenance/Register.php')))->toBeTrue();
     expect(File::exists(base_path('modules/Equipment/ParameterLog/Register.php')))->toBeTrue();
-    expect(File::exists(base_path('modules/Equipment/MasterData/Register.php')))->toBeTrue();
+    expect(File::exists(base_path('modules/Equipment/Management/Register.php')))->toBeTrue();
     expect(File::exists(base_path('modules/Masterdata/Equipment/Register.php')))->toBeTrue();
 
     $migrationFiles = File::files(database_path('migrations'));
     expect(count($migrationFiles))->toBe(18);
 });
+
+

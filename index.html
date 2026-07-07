@@ -159,9 +159,19 @@
 │   │   ├── <span style="color: #38bdf8; font-weight: 600;">ErrorMonitoring/</span>
 │   │   ├── <span style="color: #38bdf8; font-weight: 600;">Maintenance/</span>
 │   │   ├── <span style="color: #38bdf8; font-weight: 600;">ParameterLog/</span>
-│   │   └── <span style="color: #38bdf8; font-weight: 600;">MasterData/</span> <span class="cmt">(Quản lý IoT logs & seeding lỗi dừng ngắn)</span>
+│   │   └── <span style="color: #38bdf8; font-weight: 600;">MasterData/</span> <span class="cmt">(Quản lý IoT logs & seeding lỗi dừng ngắn, Actions cũng chia theo Model)</span>
 │   └── <span style="color: #38bdf8; font-weight: 600;">Masterdata/</span>
-│       └── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span> <span class="cmt">(Dữ liệu gốc Thiết bị: equipment, categories, parameters, errors)</span>
+│       └── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span> <span class="cmt">(Dữ liệu gốc Thiết bị)</span>
+│           ├── <span style="color: #38bdf8; font-weight: 600;">Actions/</span> <span class="cmt">(Các action được chia thư mục đại diện cho từng Model)</span>
+│           │   ├── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span>
+│           │   ├── <span style="color: #38bdf8; font-weight: 600;">EquipmentCategory/</span>
+│           │   ├── <span style="color: #38bdf8; font-weight: 600;">EquipmentParameter/</span>
+│           │   ├── <span style="color: #38bdf8; font-weight: 600;">StandardParameter/</span>
+│           │   ├── <span style="color: #38bdf8; font-weight: 600;">EquipmentError/</span>
+│           │   └── <span style="color: #38bdf8; font-weight: 600;">IotLog/</span>
+│           ├── <span style="color: #38bdf8; font-weight: 600;">Models/</span>
+│           ├── <span style="color: #fbbf24;">Register.php</span>
+│           └── <span style="color: #fbbf24;">routes.php</span>
 ├── <span style="color: #38bdf8; font-weight: 600;">database/</span>
 │   └── <span style="color: #38bdf8; font-weight: 600;">migrations/</span> <span class="cmt">(Các file migration của package được copy sang đây)</span>
 │       ├── <span style="color: #fbbf24;">2025_06_23_084823_eamo_create_equipment_table.php</span>

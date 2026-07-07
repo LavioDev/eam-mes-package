@@ -32,6 +32,7 @@
         "psr-4": {
             "Spatie\\LaravelPackageTools\\": "src",
             "Modules\\Equipment\\": "src/Modules/Equipment",
+            "Modules\\Masterdata\\": "src/Modules/Masterdata",
             "App\\": "src/App"
         }
     },
