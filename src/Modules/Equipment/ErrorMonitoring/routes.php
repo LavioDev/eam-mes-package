@@ -14,6 +14,12 @@ use Modules\Equipment\ErrorMonitoring\Actions\IndexStockOeeChartAction;
 use Modules\Equipment\ErrorMonitoring\Actions\IndexStockOeeHomeChartAction;
 use Modules\Equipment\ErrorMonitoring\Actions\OperatingTimeChartAction;
 use Modules\Equipment\ErrorMonitoring\Actions\SaveEquipmentErrorLogAction;
+use Modules\Equipment\ErrorMonitoring\Actions\DeleteOperatingTimeAction;
+use Modules\Equipment\ErrorMonitoring\Actions\IndexOperatingTimeAction;
+use Modules\Equipment\ErrorMonitoring\Actions\IndexOperatingTimeChartAction;
+use Modules\Equipment\ErrorMonitoring\Actions\ShowOperatingTimeAction;
+use Modules\Equipment\ErrorMonitoring\Actions\StoreOperatingTimeAction;
+use Modules\Equipment\ErrorMonitoring\Actions\UpdateOperatingTimeAction;
 
 Route::group([], function (): void {
     Route::prefix('v1/equipment/error-monitoring/equipment-error-logs')->name('equipment-error-logs.')->group(function (): void {
@@ -27,7 +33,15 @@ Route::group([], function (): void {
         Route::delete('/{id}', DeleteEquipmentErrorLogAction::class)->name('destroy');
 
         Route::post('/save', SaveEquipmentErrorLogAction::class)->name('save');
+    });
 
+    Route::prefix('v1/equipment/error-monitoring/operating-times')->name('operating-times.')->group(function (): void {
+        Route::get('/', IndexOperatingTimeAction::class)->name('index');
+        Route::post('/', StoreOperatingTimeAction::class)->name('store');
+        Route::get('/chart', IndexOperatingTimeChartAction::class)->name('chart');
+        Route::get('/{id}', ShowOperatingTimeAction::class)->name('show');
+        Route::put('/{id}', UpdateOperatingTimeAction::class)->name('update');
+        Route::delete('/{id}', DeleteOperatingTimeAction::class)->name('destroy');
     });
 
     // Route::prefix('v1/equipment/error-monitoring/statistical/')->name('error-monitoring-statistical')->group(function (): void {

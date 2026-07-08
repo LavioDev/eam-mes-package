@@ -3,30 +3,42 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Masterdata\Equipment\Actions\Equipment\DeleteEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\IndexEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\ShowEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\StoreEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\Equipment\UpdateEquipmentAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\DeleteEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\IndexEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\ShowEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\StoreEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentCategory\UpdateEquipmentCategoryAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\DeleteEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\IndexEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\ShowEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\StoreEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentError\UpdateEquipmentErrorAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\DeleteEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\IndexEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\ShowEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\StoreEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentParameter\UpdateEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentState\DeleteEquipmentStateAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentState\IndexEquipmentStateAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentState\ShowEquipmentStateAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentState\StoreEquipmentStateAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentState\UpdateEquipmentStateAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentImage\DeleteEquipmentImageAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentImage\IndexEquipmentImageAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentImage\ShowEquipmentImageAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentImage\StoreEquipmentImageAction;
+use Modules\Masterdata\Equipment\Actions\EquipmentImage\UpdateEquipmentImageAction;
 use Modules\Masterdata\Equipment\Models\Equipment;
 use Modules\Masterdata\Equipment\Models\EquipmentCategory;
 use Modules\Masterdata\Equipment\Models\EquipmentError;
 use Modules\Masterdata\Equipment\Models\EquipmentParameter;
-use Modules\Masterdata\Equipment\Actions\Equipment\DeleteEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentCategory\DeleteEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentError\DeleteEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentParameter\DeleteEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\Equipment\IndexEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentCategory\IndexEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentError\IndexEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentParameter\IndexEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\Equipment\ShowEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentCategory\ShowEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentError\ShowEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentParameter\ShowEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\Equipment\StoreEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentCategory\StoreEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentError\StoreEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentParameter\StoreEquipmentParameterAction;
-use Modules\Masterdata\Equipment\Actions\Equipment\UpdateEquipmentAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentCategory\UpdateEquipmentCategoryAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentError\UpdateEquipmentErrorAction;
-use Modules\Masterdata\Equipment\Actions\EquipmentParameter\UpdateEquipmentParameterAction;
+use Modules\Masterdata\Equipment\Models\EquipmentState;
+use Modules\Masterdata\Equipment\Models\EquipmentImage;
 
 Route::group([], function (): void {
     Route::prefix('v1/equipment')->name('equipment.')->group(function (): void {
@@ -49,8 +61,6 @@ Route::group([], function (): void {
             ->name('destroy');
     });
 
-
-
     Route::prefix('v1/equipment-errors')->name('equipment-errors.')->group(function (): void {
         Route::get('/', IndexEquipmentErrorAction::class)->name('index');
         Route::post('/', StoreEquipmentErrorAction::class)->name('store');
@@ -68,6 +78,26 @@ Route::group([], function (): void {
         Route::put('/{id}', UpdateEquipmentCategoryAction::class)->name('update');
         Route::delete('/{id}', DeleteEquipmentCategoryAction::class)
             ->middleware('block.if.referenced:' . EquipmentCategory::class)
+            ->name('destroy');
+    });
+
+    Route::prefix('v1/equipment-states')->name('equipment-states.')->group(function (): void {
+        Route::get('/', IndexEquipmentStateAction::class)->name('index');
+        Route::post('/', StoreEquipmentStateAction::class)->name('store');
+        Route::get('/{id}', ShowEquipmentStateAction::class)->name('show');
+        Route::put('/{id}', UpdateEquipmentStateAction::class)->name('update');
+        Route::delete('/{id}', DeleteEquipmentStateAction::class)
+            ->middleware('block.if.referenced:' . EquipmentState::class)
+            ->name('destroy');
+    });
+
+    Route::prefix('v1/equipment-images')->name('equipment-images.')->group(function (): void {
+        Route::get('/', IndexEquipmentImageAction::class)->name('index');
+        Route::post('/', StoreEquipmentImageAction::class)->name('store');
+        Route::get('/{id}', ShowEquipmentImageAction::class)->name('show');
+        Route::put('/{id}', UpdateEquipmentImageAction::class)->name('update');
+        Route::delete('/{id}', DeleteEquipmentImageAction::class)
+            ->middleware('block.if.referenced:' . EquipmentImage::class)
             ->name('destroy');
     });
 
