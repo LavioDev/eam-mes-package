@@ -14,12 +14,7 @@ return new class extends Migration
             $table->string('id', 36)->primary();
             $table->string('code', 32)->unique();
             $table->string('equipment_id', 36)->nullable();
-            $table->string('product_category_id', 36)->nullable();
-            $table->string('equipment_category_id', 36)->nullable();
             $table->string('unit_id', 36)->nullable();
-            $table->string('name');
-            // $table->decimal('standard_min', 15, 2)->nullable();
-            // $table->decimal('standard_max', 15, 2)->nullable();
             $table->timestamps();
 
             $table->foreign('equipment_id')->references('id')->on('eamo_equipment')->nullOnDelete()->cascadeOnUpdate();

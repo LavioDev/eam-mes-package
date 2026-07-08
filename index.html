@@ -189,7 +189,7 @@
                     <div class="diagram-title">Mô hình dữ liệu gốc Thiết bị (Mermaid ERD)</div>
                     <pre class="mermaid" style="background: transparent; border: none; overflow-x: auto; display: flex; justify-content: center;">
 erDiagram
-    eamo_equipment ||--o| equipment_categories : "belongs to"
+    eamo_equipment ||--o| eamo_equipment_categories : "belongs to"
     eamo_equipment ||--o{ eamo_equipment_parameters : "has"
     eamo_equipment ||--o{ eamo_standard_parameters : "defines standards"
     eamo_equipment ||--o{ eamo_equipment_equipment_errors : "pivot"
@@ -213,7 +213,7 @@ erDiagram
         boolean is_active
     }
 
-    equipment_categories {
+    eamo_equipment_categories {
         string id PK
         string name
     }
@@ -222,10 +222,7 @@ erDiagram
         string id PK
         string code UK
         string equipment_id FK
-        string product_category_id
-        string equipment_category_id
         string unit_id
-        string name
     }
 
     eamo_standard_parameters {
@@ -445,7 +442,7 @@ erDiagram
                         <div class="step-marker">4</div>
                         <div class="step-item-body">
                             <div class="step-item-title">Publish module Dữ liệu gốc Thiết bị (Masterdata Equipment Module)</div>
-                            <p>Định nghĩa cấu trúc dữ liệu gốc của thiết bị (bảng <code>equipment</code>, <code>equipment_categories</code>, <code>equipment_parameters</code>, <code>standard_parameters</code>, và <code>equipment_errors</code>) giúp thiết lập nền tảng liên kết cho mọi nghiệp vụ vận hành:</p>
+                            <p>Định nghĩa cấu trúc dữ liệu gốc của thiết bị (bảng <code>eamo_equipment</code>, <code>eamo_equipment_categories</code>, <code>eamo_equipment_parameters</code>, <code>eamo_standard_parameters</code>, và <code>eamo_equipment_errors</code>) giúp thiết lập nền tảng liên kết cho mọi nghiệp vụ vận hành:</p>
                             <div class="code-container">
                                 <div class="code-header">
                                     <span>Bash</span>

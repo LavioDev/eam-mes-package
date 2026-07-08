@@ -34,6 +34,7 @@ it('can run all eamo migrations', function () {
         'eamo_equipment_equipment_errors',
         'eamo_iot_logs',
         'eamo_extension_requests',
+        'eamo_equipment_categories',
     ];
 
     foreach ($tables as $table) {

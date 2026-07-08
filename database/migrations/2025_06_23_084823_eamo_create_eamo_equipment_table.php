@@ -26,6 +26,8 @@ return new class extends Migration
             $table->decimal('assigned_machine_productivity_person', 10, 2)->nullable()->comment('Assigned machine productivity (person)');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('equipment_category_id')->references('id')->on('eamo_equipment_categories')->nullOnDelete()->cascadeOnUpdate();
         });
     }
 

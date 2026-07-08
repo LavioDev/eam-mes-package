@@ -42,7 +42,7 @@ Sơ đồ quan hệ dưới đây mô tả cấu trúc dữ liệu gốc của t
 
 ```mermaid
 erDiagram
-    eamo_equipment ||--o| equipment_categories : "belongs to"
+    eamo_equipment ||--o| eamo_equipment_categories : "belongs to"
     eamo_equipment ||--o{ eamo_equipment_parameters : "has"
     eamo_equipment ||--o{ eamo_standard_parameters : "defines standards"
     eamo_equipment ||--o{ eamo_equipment_equipment_errors : "pivot"
@@ -68,7 +68,7 @@ erDiagram
         timestamp updated_at
     }
 
-    equipment_categories {
+    eamo_equipment_categories {
         string id PK
         string name
         timestamp created_at
@@ -79,10 +79,7 @@ erDiagram
         string id PK
         string code UK
         string equipment_id FK
-        string product_category_id
-        string equipment_category_id
         string unit_id
-        string name
         timestamp created_at
         timestamp updated_at
     }

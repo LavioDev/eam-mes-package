@@ -72,6 +72,7 @@ class EamMesPublishCommand extends Command
         'masterdata-equipment' => [
             'name' => 'MasterdataEquipment',
             'migrations' => [
+                '2025_06_22_080000_eamo_create_eamo_equipment_categories_table.php',
                 '2025_06_23_084823_eamo_create_eamo_equipment_table.php',
                 '2025_07_03_095341_eamo_create_eamo_equipment_parameters_table.php',
                 '2025_07_03_102525_eamo_create_eamo_standard_parameters_table.php',

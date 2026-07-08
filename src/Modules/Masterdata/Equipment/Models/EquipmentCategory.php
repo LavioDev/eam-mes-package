@@ -29,7 +29,7 @@ final class EquipmentCategory extends Model
 
     protected $keyType = 'string';
 
-    protected $table = 'equipment_categories';
+    protected $table = 'eamo_equipment_categories';
 
     protected function casts(): array
     {
