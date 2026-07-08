@@ -11,8 +11,6 @@ use Modules\Equipment\ParameterLog\Domain\Events\Resources\EquipmentParameterLog
 use Modules\Equipment\ParameterLog\Models\EquipmentParameterLog;
 use Modules\Equipment\ParameterLog\Requests\SaveEquipmentParameterLogRequest;
 use Modules\Manufacturing\Tracking\Infrastructure\Models\WorkCenterTracker;
-use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
-use Modules\Masterdata\Equipment\Infrastructure\Models\StandardParameter;
 use Throwable;
 
 final class SaveEquipmentParameterLogAction

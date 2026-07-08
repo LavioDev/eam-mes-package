@@ -14,6 +14,9 @@ return new class extends Migration
             $table->string('id', 36)->primary();
             $table->string('code', 32)->unique();
             $table->string('equipment_id', 36)->nullable();
+            $table->decimal('standard', 19, 4)->nullable();
+            $table->decimal('standard_max', 19, 4)->nullable();
+            $table->decimal('standard_min', 19, 4)->nullable();
             $table->string('unit_id', 36)->nullable();
             $table->timestamps();
 

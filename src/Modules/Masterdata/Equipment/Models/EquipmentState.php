@@ -10,20 +10,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class EquipmentParameter
+ * Class EquipmentState
  *
  * @property string $id
  * @property string $equipment_id
- * @property string|null $unit_id
- * @property string $code
- * @property float|null $standard
- * @property float|null $standard_max
- * @property float|null $standard_min
+ * @property string|null $state
  * @property-read Equipment $equipment
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable $updated_at
  */
-final class EquipmentParameter extends Model
+final class EquipmentState extends Model
 {
     use HasUuids;
 
@@ -31,16 +27,12 @@ final class EquipmentParameter extends Model
 
     protected $fillable = [
         'equipment_id',
-        'unit_id',
-        'code',
-        'standard',
-        'standard_max',
-        'standard_min',
+        'state',
     ];
 
     protected $keyType = 'string';
 
-    protected $table = 'eamo_equipment_parameters';
+    protected $table = 'eamo_equipment_states';
 
     public function equipment(): BelongsTo
     {
@@ -49,11 +41,6 @@ final class EquipmentParameter extends Model
 
     protected function casts(): array
     {
-        return [
-            'standard' => 'float',
-            'standard_max' => 'float',
-            'standard_min' => 'float',
-        ];
+        return [];
     }
 }
-

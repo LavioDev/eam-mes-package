@@ -10,16 +10,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('eamo_equipment_categories', function (Blueprint $table) {
+        Schema::create('eamo_equipment_images', function (Blueprint $table): void {
             $table->string('id', 36)->primary();
-            $table->string('code', 32)->unique();
-            $table->string('name');
+            $table->string('equipment_id', 36);
+            $table->string('image_id', 36);
             $table->timestamps();
+
+            $table->foreign('equipment_id')->references('id')->on('eamo_equipment')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('eamo_equipment_categories');
+        Schema::dropIfExists('eamo_equipment_images');
     }
 };

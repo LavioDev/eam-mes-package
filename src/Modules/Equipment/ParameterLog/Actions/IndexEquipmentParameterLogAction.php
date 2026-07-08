@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Modules\Equipment\ParameterLog\Models\EquipmentParameterLog;
-use Modules\Masterdata\Equipment\Infrastructure\Models\StandardParameter;
 use Throwable;
 
 final class IndexEquipmentParameterLogAction

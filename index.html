@@ -116,8 +116,8 @@
                     <li><strong>Error Monitoring (Giám sát lỗi máy - <code>src/ErrorMonitoring/</code>):</strong> Theo dõi thời gian dừng máy (downtime), thu nhận thông tin mã lỗi và tự động phân tích các chỉ số quản lý thiết bị quan trọng như OEE, MTBF, MTTR.</li>
                     <li><strong>Maintenance (Bảo trì vòng đời - <code>src/Maintenance/</code>):</strong> Cấu trúc danh mục bảo trì (categories), hạng mục chi tiết (items), quản lý kế hoạch tuần hoàn (plans), phân phối lịch trình (schedules) và ghi lại nhật ký thực thi (logs).</li>
                     <li><strong>Parameter Log (Ghi nhận thông số sensor - <code>src/ParameterLog/</code>):</strong> Hệ thống lưu trữ dữ liệu chuỗi thời gian (Timeseries) thu thập các thông số vận hành của thiết bị như nhiệt độ, áp suất, điện áp... trực tiếp từ các sensor.</li>
-                    <li><strong>Equipment (Quản lý Equipment - <code>src/Equipment/MasterData/</code>):</strong> Lớp quản lý hoạt động và ghi log thời gian thực (IoT logs, seeding lỗi dừng ngắn) cho các thiết bị.</li>
-                    <li><strong>Masterdata Equipment (Dữ liệu gốc Thiết bị - <code>src/Masterdata/Equipment/</code>):</strong> Định nghĩa cấu trúc dữ liệu gốc của thiết bị (equipment), nhóm thiết bị (categories), thông số kỹ thuật (parameters), các ngưỡng tiêu chuẩn (standard parameters) và phân loại lỗi hệ thống (errors).</li>
+                    <li><strong>Equipment (Quản lý Equipment - <code>src/Equipment/Management/</code>):</strong> Lớp quản lý hoạt động và ghi nhận seeding lỗi dừng ngắn cho các thiết bị.</li>
+                    <li><strong>Masterdata Equipment (Dữ liệu gốc Thiết bị - <code>src/Masterdata/Equipment/</code>):</strong> Định nghĩa cấu trúc dữ liệu gốc của thiết bị (equipment), nhóm thiết bị (categories), thông số kỹ thuật và các ngưỡng tiêu chuẩn (parameters), trạng thái thiết bị (states), ảnh thiết bị (images) và phân loại lỗi hệ thống (errors).</li>
                 </ul>
 
                 <h2>Sơ đồ luồng phối hợp dữ liệu</h2>
@@ -159,24 +159,24 @@
 │   │   ├── <span style="color: #38bdf8; font-weight: 600;">ErrorMonitoring/</span>
 │   │   ├── <span style="color: #38bdf8; font-weight: 600;">Maintenance/</span>
 │   │   ├── <span style="color: #38bdf8; font-weight: 600;">ParameterLog/</span>
-│   │   └── <span style="color: #38bdf8; font-weight: 600;">MasterData/</span> <span class="cmt">(Quản lý IoT logs & seeding lỗi dừng ngắn, Actions cũng chia theo Model)</span>
+│   │   └── <span style="color: #38bdf8; font-weight: 600;">Management/</span> <span class="cmt">(Quản lý Thiết bị - Seeding lỗi dừng ngắn, Actions cũng chia theo Model)</span>
 │   └── <span style="color: #38bdf8; font-weight: 600;">Masterdata/</span>
 │       └── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span> <span class="cmt">(Dữ liệu gốc Thiết bị)</span>
 │           ├── <span style="color: #38bdf8; font-weight: 600;">Actions/</span> <span class="cmt">(Các action được chia thư mục đại diện cho từng Model)</span>
 │           │   ├── <span style="color: #38bdf8; font-weight: 600;">Equipment/</span>
 │           │   ├── <span style="color: #38bdf8; font-weight: 600;">EquipmentCategory/</span>
 │           │   ├── <span style="color: #38bdf8; font-weight: 600;">EquipmentParameter/</span>
-│           │   ├── <span style="color: #38bdf8; font-weight: 600;">StandardParameter/</span>
-│           │   ├── <span style="color: #38bdf8; font-weight: 600;">EquipmentError/</span>
-│           │   └── <span style="color: #38bdf8; font-weight: 600;">IotLog/</span>
+│           │   └── <span style="color: #38bdf8; font-weight: 600;">EquipmentError/</span>
 │           ├── <span style="color: #38bdf8; font-weight: 600;">Models/</span>
 │           ├── <span style="color: #fbbf24;">Register.php</span>
 │           └── <span style="color: #fbbf24;">routes.php</span>
 ├── <span style="color: #38bdf8; font-weight: 600;">database/</span>
 │   └── <span style="color: #38bdf8; font-weight: 600;">migrations/</span> <span class="cmt">(Các file migration của package được copy sang đây)</span>
-│       ├── <span style="color: #fbbf24;">2025_06_23_084823_eamo_create_equipment_table.php</span>
-│       ├── <span style="color: #fbbf24;">2025_07_03_095341_eamo_create_equipment_parameters_table.php</span>
-│       └── <span style="color: #fbbf24;">2025_08_05_113908_eamo_create_checklist_sessions_table.php</span>
+│       ├── <span style="color: #fbbf24;">2025_06_22_080000_eamo_create_eamo_equipment_categories_table.php</span>
+│       ├── <span style="color: #fbbf24;">2025_06_23_084823_eamo_create_eamo_equipment_table.php</span>
+│       ├── <span style="color: #fbbf24;">2025_06_23_084824_eamo_create_eamo_equipment_states_table.php</span>
+│       ├── <span style="color: #fbbf24;">2025_06_23_084825_eamo_create_eamo_equipment_images_table.php</span>
+│       └── <span style="color: #fbbf24;">2025_07_03_095341_eamo_create_eamo_equipment_parameters_table.php</span>
 └── <span style="color: #38bdf8; font-weight: 600;">config/</span>
     └── <span style="color: #fbbf24;">eam.php</span> <span class="cmt">(Cấu hình chính: prefix, whitelist, routes, extensions)</span></div>
                 </div>
@@ -191,44 +191,42 @@
 erDiagram
     eamo_equipment ||--o| eamo_equipment_categories : "belongs to"
     eamo_equipment ||--o{ eamo_equipment_parameters : "has"
-    eamo_equipment ||--o{ eamo_standard_parameters : "defines standards"
+    eamo_equipment ||--o| eamo_equipment_states : "has state"
+    eamo_equipment ||--o{ eamo_equipment_images : "has images"
     eamo_equipment ||--o{ eamo_equipment_equipment_errors : "pivot"
     eamo_equipment_errors ||--o{ eamo_equipment_equipment_errors : "pivot"
-    eamo_equipment ||--o{ eamo_iot_logs : "records logs"
 
     eamo_equipment {
         string id PK
-        string code UK
+        string code
         string name
-        string process_id
-        string factory_id
-        boolean virtual_equipment
-        string equipment_category_id
-        string image_id
-        date date_imported
-        boolean state
+        string equipment_category_id FK
         string device_id
-        unsigned_integer assigned_productivity_per_hour
-        decimal assigned_machine_productivity_person
         boolean is_active
     }
 
     eamo_equipment_categories {
         string id PK
+        string code
         string name
+    }
+
+    eamo_equipment_states {
+        string id PK
+        string equipment_id FK
+        string state
+    }
+
+    eamo_equipment_images {
+        string id PK
+        string equipment_id FK
+        string image_id
     }
 
     eamo_equipment_parameters {
         string id PK
-        string code UK
+        string code
         string equipment_id FK
-        string unit_id
-    }
-
-    eamo_standard_parameters {
-        string id PK
-        string equipment_id FK
-        string equipment_parameter_id FK
         decimal standard
         decimal standard_max
         decimal standard_min
@@ -244,18 +242,8 @@ erDiagram
     }
 
     eamo_equipment_equipment_errors {
-        string equipment_id PK_FK
-        string equipment_error_id PK_FK
-    }
-
-    eamo_iot_logs {
-        bigint id PK
-        timestamptz ts
-        string type
-        jsonb data
-        string equipment_id FK
-        string work_center_id
-        string work_order_id
+        string equipment_id PK, FK
+        string equipment_error_id PK, FK
     }
                     </pre>
                 </div>
@@ -442,7 +430,7 @@ erDiagram
                         <div class="step-marker">4</div>
                         <div class="step-item-body">
                             <div class="step-item-title">Publish module Dữ liệu gốc Thiết bị (Masterdata Equipment Module)</div>
-                            <p>Định nghĩa cấu trúc dữ liệu gốc của thiết bị (bảng <code>eamo_equipment</code>, <code>eamo_equipment_categories</code>, <code>eamo_equipment_parameters</code>, <code>eamo_standard_parameters</code>, và <code>eamo_equipment_errors</code>) giúp thiết lập nền tảng liên kết cho mọi nghiệp vụ vận hành:</p>
+                            <p>Định nghĩa cấu trúc dữ liệu gốc của thiết bị (bảng <code>eamo_equipment</code>, <code>eamo_equipment_categories</code>, <code>eamo_equipment_states</code>, <code>eamo_equipment_images</code>, <code>eamo_equipment_parameters</code>, và <code>eamo_equipment_errors</code>) giúp thiết lập nền tảng liên kết cho mọi nghiệp vụ vận hành:</p>
                             <div class="code-container">
                                 <div class="code-header">
                                     <span>Bash</span>
@@ -471,7 +459,7 @@ erDiagram
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --module=equipment</span>
 
 <span class="cmt"># Hoặc chỉ publish từng submodule riêng lẻ của Equipment:</span>
-<span class="cmt"># 1. Submodule Management (Quản lý Thiết bị - IoT Logs &amp; Dừng ngắn)</span>
+<span class="cmt"># 1. Submodule Management (Quản lý Thiết bị - Seeding lỗi dừng ngắn)</span>
 <span class="kw">php artisan</span> <span class="str">eam-mes:publish --submodule=management</span>
 
 <span class="cmt"># 2. Submodule Checklist (Kiểm tra đầu ca/định kỳ)</span>
@@ -715,42 +703,7 @@ erDiagram
                             <td>Masterdata Equipment (Dữ liệu gốc)</td>
                             <td>auth:api</td>
                         </tr>
-                        <!-- Standard Parameters CRUD -->
-                        <tr>
-                            <td><span class="badge-method get">GET</span></td>
-                            <td><code class="api-path">/v1/standard-parameters</code></td>
-                            <td>Lấy danh sách các ngưỡng tiêu chuẩn thiết bị</td>
-                            <td>Masterdata Equipment (Dữ liệu gốc)</td>
-                            <td>auth:api</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-method post">POST</span></td>
-                            <td><code class="api-path">/v1/standard-parameters</code></td>
-                            <td>Đăng ký ngưỡng tiêu chuẩn thiết bị mới</td>
-                            <td>Masterdata Equipment (Dữ liệu gốc)</td>
-                            <td>auth:api</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-method get">GET</span></td>
-                            <td><code class="api-path">/v1/standard-parameters/{id}</code></td>
-                            <td>Lấy chi tiết ngưỡng tiêu chuẩn thiết bị</td>
-                            <td>Masterdata Equipment (Dữ liệu gốc)</td>
-                            <td>auth:api</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-method put">PUT</span></td>
-                            <td><code class="api-path">/v1/standard-parameters/{id}</code></td>
-                            <td>Cập nhật ngưỡng tiêu chuẩn thiết bị</td>
-                            <td>Masterdata Equipment (Dữ liệu gốc)</td>
-                            <td>auth:api</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-method delete">DELETE</span></td>
-                            <td><code class="api-path">/v1/standard-parameters/{id}</code></td>
-                            <td>Xóa ngưỡng tiêu chuẩn thiết bị</td>
-                            <td>Masterdata Equipment (Dữ liệu gốc)</td>
-                            <td>auth:api</td>
-                        </tr>
+
                         <!-- Equipment Errors CRUD -->
                         <tr>
                             <td><span class="badge-method get">GET</span></td>
@@ -787,21 +740,7 @@ erDiagram
                             <td>Masterdata Equipment (Dữ liệu gốc)</td>
                             <td>auth:api</td>
                         </tr>
-                        <!-- IoT Logs -->
-                        <tr>
-                            <td><span class="badge-method get">GET</span></td>
-                            <td><code class="api-path">/v1/iot-logs</code></td>
-                            <td>Lấy danh sách log vận hành thiết bị gửi từ IoT/Sensor</td>
-                            <td>Equipment (Quản lý Thiết bị)</td>
-                            <td>auth:api</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-method get">GET</span></td>
-                            <td><code class="api-path">/v1/iot-logs/{id}</code></td>
-                            <td>Lấy chi tiết log vận hành thiết bị</td>
-                            <td>Equipment (Quản lý Thiết bị)</td>
-                            <td>auth:api</td>
-                        </tr>
+
                     </tbody>
                 </table>
             </section>

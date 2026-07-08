@@ -29,19 +29,15 @@ it('can run all eamo migrations', function () {
         'eamo_operating_times',
         'eamo_equipment',
         'eamo_equipment_parameters',
-        'eamo_standard_parameters',
+        'eamo_equipment_states',
+        'eamo_equipment_images',
         'eamo_equipment_errors',
         'eamo_equipment_equipment_errors',
-        'eamo_iot_logs',
         'eamo_extension_requests',
         'eamo_equipment_categories',
     ];
 
     foreach ($tables as $table) {
-        if ($table === 'eamo_iot_logs') {
-            expect(Schema::connection('pgsql_log')->hasTable($table))->toBeTrue("Table {$table} does not exist on connection pgsql_log.");
-        } else {
-            expect(Schema::hasTable($table))->toBeTrue("Table {$table} does not exist.");
-        }
+        expect(Schema::hasTable($table))->toBeTrue("Table {$table} does not exist.");
     }
 });

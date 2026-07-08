@@ -63,7 +63,6 @@ class EamMesPublishCommand extends Command
         'management' => [
             'name' => 'Management',
             'migrations' => [
-                '2025_08_04_064327_eamo_create_eamo_iot_logs_table.php',
                 '2025_08_04_100000_eamo_seed_short_stop_equipment_error_for_iot_equipment.php',
             ],
             'source_dir' => 'Equipment/Management',
@@ -74,8 +73,9 @@ class EamMesPublishCommand extends Command
             'migrations' => [
                 '2025_06_22_080000_eamo_create_eamo_equipment_categories_table.php',
                 '2025_06_23_084823_eamo_create_eamo_equipment_table.php',
+                '2025_06_23_084824_eamo_create_eamo_equipment_states_table.php',
+                '2025_06_23_084825_eamo_create_eamo_equipment_images_table.php',
                 '2025_07_03_095341_eamo_create_eamo_equipment_parameters_table.php',
-                '2025_07_03_102525_eamo_create_eamo_standard_parameters_table.php',
                 '2025_07_03_120000_eamo_create_eamo_equipment_errors_table.php',
                 '2025_08_04_092812_eamo_create_eamo_equipment_equipment_errors_table.php',
             ],
