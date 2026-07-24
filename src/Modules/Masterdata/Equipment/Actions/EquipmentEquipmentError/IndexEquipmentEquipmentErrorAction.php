@@ -7,6 +7,7 @@ namespace Modules\Masterdata\Equipment\Actions\EquipmentEquipmentError;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Modules\Equipment\ErrorMonitoring\Models\EquipmentErrorLog;
 
 final class IndexEquipmentEquipmentErrorAction
 {
@@ -14,6 +15,10 @@ final class IndexEquipmentEquipmentErrorAction
 
     public function asController(Request $request): JsonResponse
     {
-        return response()->json([]);
+        $definitions = EquipmentErrorLog::query()
+            ->whereNull('occurred_at')
+            ->get();
+
+        return response()->json($definitions);
     }
 }

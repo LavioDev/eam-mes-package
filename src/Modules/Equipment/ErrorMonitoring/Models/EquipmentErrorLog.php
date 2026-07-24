@@ -138,18 +138,26 @@ final class EquipmentErrorLog extends Model
 
 
 
+    public function scopeDefinitions(Builder $query): Builder
+    {
+        return $query->whereNull('occurred_at');
+    }
+
+    public function scopeOccurred(Builder $query): Builder
+    {
+        return $query->whereNotNull('occurred_at');
+    }
+
     protected static function boot(): void
     {
         parent::boot();
 
         self::creating(function (self $model) {
-            if (empty($model->occurred_at)) {
+            if (empty($model->occurred_at) && ! array_key_exists('occurred_at', $model->getAttributes())) {
                 $model->occurred_at = CarbonImmutable::now();
             }
         });
     }
-
-
 
     protected function casts(): array
     {

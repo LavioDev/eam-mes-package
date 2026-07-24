@@ -14,7 +14,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('equipment_id', 36);
             $table->string('equipment_error_id', 36)->nullable();
-            $table->dateTime('occurred_at'); // Thời điểm lỗi phát sinh
+            $table->dateTime('occurred_at')->nullable(); // Thời điểm lỗi phát sinh
             $table->dateTime('restarted_at')->nullable();    // Thời điểm thiết bị chạy lại
             $table->dateTime('handled_at')->nullable();      // Thời điểm xử lý xong lỗi
             $table->string('handler_id')->nullable();

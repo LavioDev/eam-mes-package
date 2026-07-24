@@ -48,10 +48,10 @@ final class EquipmentError extends Model
     {
         return $this->belongsToMany(
             Equipment::class,
-            'eamo_equipment_equipment_errors',
+            'eamo_equipment_error_logs',
             'equipment_error_id',
             'equipment_id'
-        )->withTimestamps();
+        )->wherePivotNull('occurred_at')->withTimestamps();
     }
 
     public function errorLogs(): HasMany

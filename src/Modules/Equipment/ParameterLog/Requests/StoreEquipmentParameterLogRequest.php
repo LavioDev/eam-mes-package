@@ -6,8 +6,6 @@ namespace Modules\Equipment\ParameterLog\Requests;
 
 use App\Rules\IsValidId;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Modules\Equipment\ParameterLog\Models\EquipmentParameterLog;
 
 /**
  * @property-read string $name
@@ -40,13 +38,21 @@ final class StoreEquipmentParameterLogRequest extends FormRequest
                 'max:36',
             ],
             'unit_id' => [
-                'required',
+                'nullable',
                 'string',
                 'min:1',
                 new IsValidId(),
                 'max:36',
             ],
-            'value' => ['required', 'string', 'min:1', 'max:36'],
+            'value' => ['nullable', 'string', 'min:1', 'max:36'],
+            'user_id' => [
+                'nullable',
+                'string',
+                'min:1',
+                new IsValidId(),
+                'max:36',
+            ],
+            'recorded_at' => ['nullable', 'date'],
         ];
     }
 }

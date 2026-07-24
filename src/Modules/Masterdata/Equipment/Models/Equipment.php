@@ -70,10 +70,10 @@ final class Equipment extends Model
     {
         return $this->belongsToMany(
             EquipmentError::class,
-            'eamo_equipment_equipment_errors',
+            'eamo_equipment_error_logs',
             'equipment_id',
             'equipment_error_id'
-        )->withTimestamps();
+        )->wherePivotNull('occurred_at')->withTimestamps();
     }
 
     /**

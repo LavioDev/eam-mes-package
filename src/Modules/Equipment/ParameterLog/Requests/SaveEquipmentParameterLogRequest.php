@@ -6,22 +6,16 @@ namespace Modules\Equipment\ParameterLog\Requests;
 
 use App\Rules\IsValidId;
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\Manufacturing\Lot\Infrastructure\Models\Lot;
-use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
-use Modules\Masterdata\Equipment\Infrastructure\Models\EquipmentParameter;
-use Modules\Masterdata\Product\Infrastructure\Models\Product;
 
 /**
  * @property-read string $name
  */
 final class SaveEquipmentParameterLogRequest extends FormRequest
 {
-
     public function authorize(): bool
     {
         return true;
     }
-
 
     public function rules(): array
     {
@@ -33,20 +27,14 @@ final class SaveEquipmentParameterLogRequest extends FormRequest
                 new IsValidId(),
                 'max:36',
             ],
-            'product_id' => [
+            'user_id' => [
                 'nullable',
                 'string',
                 'min:0',
                 new IsValidId(),
                 'max:36',
             ],
-            'lot_id' => [
-                'nullable',
-                'string',
-                'min:0',
-                new IsValidId(),
-                'max:36',
-            ],
+            'recorded_at' => ['nullable', 'date'],
             'parameters' => ['nullable', 'array', 'min:1'],
             'parameters.*.equipment_parameter_id' => [
                 'required',
@@ -56,6 +44,13 @@ final class SaveEquipmentParameterLogRequest extends FormRequest
                 'max:36',
             ],
             'parameters.*.value' => ['nullable', 'numeric'],
+            'parameters.*.unit_id' => [
+                'nullable',
+                'string',
+                'min:0',
+                new IsValidId(),
+                'max:36',
+            ],
         ];
     }
 }

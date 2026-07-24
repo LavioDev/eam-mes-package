@@ -210,9 +210,9 @@
                         </tr>
                         <tr>
                             <td>Masterdata Equipment</td>
-                            <td><code>eamo_equipment_errors</code>, <code>eamo_equipment_equipment_errors</code></td>
-                            <td>Danh mục lỗi và mapping lỗi</td>
-                            <td>Equipment error → Pivot</td>
+                            <td><code>eamo_equipment_errors</code></td>
+                            <td>Danh mục lỗi (gán qua bản ghi định nghĩa trong eamo_equipment_error_logs)</td>
+                            <td>Equipment error mapping</td>
                         </tr>
                         <tr>
                             <td>Checklist</td>
@@ -321,21 +321,15 @@ erDiagram
 
                 <div class="diagram-box" style="margin-top: 16px;">
                     <div class="diagram-title">Masterdata Equipment — Danh mục lỗi</div>
-                    <p>Pivot giữ <code>equipment_id</code> để map lỗi cho thiết bị; line tới equipment được ẩn để tránh nối chéo sơ đồ.</p>
+                    <p>Mã lỗi thiết bị được định nghĩa và gán cho thiết bị thông qua các bản ghi định nghĩa trong <code>eamo_equipment_error_logs</code> (khi <code>occurred_at IS NULL</code>).</p>
                     <pre class="mermaid" style="background: transparent; border: none; overflow-x: auto; display: flex; justify-content: center;">
 erDiagram
-    eamo_equipment_errors ||--o{ eamo_equipment_equipment_errors : "maps"
-
     eamo_equipment_errors {
         string id PK
         string name
         text reason
         text fix
         text protection_measures
-    }
-    eamo_equipment_equipment_errors {
-        string equipment_id PK
-        string equipment_error_id PK, FK
     }
                     </pre>
                 </div>
@@ -468,7 +462,7 @@ erDiagram
 
                 <div class="diagram-box" style="margin-top: 16px;">
                     <div class="diagram-title">Parameter Log</div>
-                    <p>Log timeseries độc lập; các cột ID là tham chiếu sang Masterdata hoặc ứng dụng host.</p>
+                    <p>Log timeseries độc lập ghi nhận thông số; các cột ID là tham chiếu sang Masterdata hoặc ứng dụng host.</p>
                     <pre class="mermaid" style="background: transparent; border: none; overflow-x: auto; display: flex; justify-content: center;">
 erDiagram
     eamo_equipment_parameter_logs {
@@ -476,10 +470,12 @@ erDiagram
         string equipment_id
         string equipment_parameter_id
         string unit_id
-        string product_id
-        string lot_id
-        string component_id
+        string user_id
         string value
+        timestamp recorded_at
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
                     </pre>
                 </div>

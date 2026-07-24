@@ -32,7 +32,6 @@ it('can run all eamo migrations', function () {
         'eamo_equipment_states',
         'eamo_equipment_images',
         'eamo_equipment_errors',
-        'eamo_equipment_equipment_errors',
         'eamo_extension_requests',
         'eamo_equipment_categories',
     ];

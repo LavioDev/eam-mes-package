@@ -15,7 +15,7 @@ Tài liệu này phản ánh schema thực tế trong `database/migrations` củ
 |---|---|---|---|
 | Masterdata Equipment | `eamo_equipment_categories`, `eamo_equipment`, `eamo_equipment_states`, `eamo_equipment_images` | Thiết bị cốt lõi | Category → Equipment → State / Images |
 | Masterdata Equipment | `eamo_units`, `eamo_equipment_parameters` | Thông số và đơn vị đo | Unit → Equipment parameters |
-| Masterdata Equipment | `eamo_equipment_errors`, `eamo_equipment_equipment_errors` | Danh mục lỗi và pivot mapping | Equipment error → Pivot |
+| Masterdata Equipment | `eamo_equipment_errors` | Danh mục lỗi (được gán trực tiếp qua bản ghi định nghĩa trong `eamo_equipment_error_logs` với `occurred_at IS NULL`) | Equipment error mapping |
 | Checklist | `eamo_checklist_sessions`, `eamo_checklist_details`, `eamo_checklist_schedules`, `eamo_checklist_logs` | Lập lịch và thực hiện checklist | Session → Detail / Schedule → Log |
 | Maintenance | `eamo_maintenance_categories`, `eamo_maintenance_items`, `eamo_maintenance_plans`, `eamo_maintenance_schedules`, `eamo_maintenance_logs` | Lập kế hoạch và log bảo trì | Category → Item / Plan → Schedule → Log |
 | Error Monitoring | `eamo_equipment_error_logs`, `eamo_operating_times` | Log lỗi và vận hành | Bảng log độc lập |
@@ -32,8 +32,7 @@ Tài liệu này phản ánh schema thực tế trong `database/migrations` củ
 | `eamo_equipment_images` | `EquipmentImage` | Ảnh thiết bị |
 | `eamo_equipment_parameters` | `EquipmentParameter` | Thông số, ngưỡng chuẩn |
 | `eamo_units` | `Unit` | Đơn vị đo |
-| `eamo_equipment_errors` | `EquipmentError` | Danh mục lỗi |
-| `eamo_equipment_equipment_errors` | `EquipmentEquipmentError` | Pivot equipment–error |
+| `eamo_equipment_errors` | `EquipmentError` | Danh mục lỗi (mapping qua bản ghi định nghĩa trong `eamo_equipment_error_logs`) |
 
 ```mermaid
 erDiagram
@@ -225,7 +224,7 @@ erDiagram
 
 ### 3.4 Parameter Log
 
-`eamo_equipment_parameter_logs` là bảng timeseries độc lập. `equipment_id`, `equipment_parameter_id`, `unit_id`, `product_id`, `lot_id` và `component_id` được giữ làm ID tham chiếu; không vẽ quan hệ chéo submodule.
+`eamo_equipment_parameter_logs` là bảng timeseries độc lập ghi log thông số thiết bị. `equipment_id`, `equipment_parameter_id`, `unit_id` và `user_id` là các ID tham chiếu.
 
 ```mermaid
 erDiagram
@@ -234,10 +233,12 @@ erDiagram
         uuid equipment_id
         uuid equipment_parameter_id
         uuid unit_id
-        uuid product_id
-        uuid lot_id
-        uuid component_id
+        uuid user_id
         string value
+        timestamp recorded_at
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
 ```
 

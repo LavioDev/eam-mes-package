@@ -77,7 +77,6 @@ class EamMesPublishCommand extends Command
                 '2025_06_23_084825_eamo_create_eamo_equipment_images_table.php',
                 '2025_07_03_095341_eamo_create_eamo_equipment_parameters_table.php',
                 '2025_07_03_120000_eamo_create_eamo_equipment_errors_table.php',
-                '2025_08_04_092812_eamo_create_eamo_equipment_equipment_errors_table.php',
             ],
             'source_dir' => 'Masterdata/Equipment',
             'dest_dir' => 'modules/Masterdata/Equipment',

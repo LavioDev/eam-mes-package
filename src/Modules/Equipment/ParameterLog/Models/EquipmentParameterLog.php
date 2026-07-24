@@ -9,13 +9,11 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Masterdata\Equipment\Models\Unit;
-use Modules\Masterdata\Equipment\Models\EquipmentParameter;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Core\User\Infrastructure\Models\User;
 use Modules\Masterdata\Equipment\Models\Equipment;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Modules\Inventory\Lot\Infrastructure\Models\StockProductionLot;
-use Modules\Manufacturing\Lot\Infrastructure\Models\Lot;
-use Modules\Masterdata\Product\Infrastructure\Models\Product;
+use Modules\Masterdata\Equipment\Models\EquipmentParameter;
+use Modules\Masterdata\Equipment\Models\Unit;
 
 /**
  * Class EquipmentParameterLog
@@ -23,30 +21,35 @@ use Modules\Masterdata\Product\Infrastructure\Models\Product;
  * @property string $id
  * @property string $equipment_id
  * @property string $equipment_parameter_id
- * @property string|null $product_id
- * @property string|null $lot_id
  * @property string|null $unit_id
- * @property string|null $component_id
- * @property string $value
+ * @property string|null $value
+ * @property string|null $user_id
+ * @property CarbonImmutable|null $recorded_at
  * @property-read Equipment $equipment
  * @property-read EquipmentParameter $parameter
  * @property-read Unit|null $unit
+ * @property-read User|null $user
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable $updated_at
- * @method static EquipmentParameterLogBuilder query()
+ * @property CarbonImmutable|null $deleted_at
  */
 final class EquipmentParameterLog extends Model
 {
-    use HasUuids, HasDefaultRouteBinding;
-        
+    use HasUuids, HasDefaultRouteBinding, SoftDeletes;
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
+    protected $table = 'eamo_equipment_parameter_logs';
+
     protected $fillable = [
         'equipment_id',
         'equipment_parameter_id',
-        'product_id',
-        'lot_id',
         'unit_id',
-        'component_id',
         'value',
+        'user_id',
+        'recorded_at',
     ];
 
     /**
@@ -66,33 +69,7 @@ final class EquipmentParameterLog extends Model
     }
 
     /**
-     * @return BelongsTo<Product, $this>
-     */
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    /**
-     * @return BelongsTo<Lot, $this>
-     */
-    public function stockProductionLot(): BelongsTo
-    {
-        return $this->belongsTo(StockProductionLot::class, 'lot_id');
-    }
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
-    protected $table = 'eamo_equipment_parameter_logs';
-
-
-
-
-
-    /**
-     * @return HasOne<Unit, $this>
+     * @return BelongsTo<Unit, $this>
      */
     public function unit(): BelongsTo
     {
@@ -100,10 +77,25 @@ final class EquipmentParameterLog extends Model
     }
 
     /**
-     * @return HasOne<Unit, $this>
+     * @return BelongsTo<EquipmentParameter, $this>
      */
     public function equipmentParameter(): BelongsTo
     {
         return $this->belongsTo(EquipmentParameter::class, 'equipment_parameter_id');
+    }
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'recorded_at' => 'immutable_datetime',
+        ];
     }
 }
