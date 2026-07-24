@@ -30,7 +30,6 @@ Tài liệu này quy định quy trình từng bước dành cho AI Agent để 
   - Cột mới thêm (Name, Data type, Nullable, Default, Index, Foreign key).
   - Cột bị sửa đổi / đổi tên / chuyển kiểu dữ liệu.
   - Cột bị xóa.
-  - Sử dụng SoftDeletes (`$table->softDeletes()`).
 
 ### Bước 2: Cập Nhật Migration Trong Package
 - Cập nhật file migration gốc tại `package/database/migrations/`.
@@ -39,7 +38,7 @@ Tài liệu này quy định quy trình từng bước dành cho AI Agent để 
 
 ### Bước 3: Cập Nhật Eloquent Model
 - **PHPDoc**: Cập nhật danh sách `@property` ở đầu file Model.
-- **Traits**: Thêm/Xóa traits tương ứng (ví dụ `use SoftDeletes;`).
+- **Traits**: Thêm/Xóa traits tương ứng (ví dụ `use HasUuids;`).
 - **`$fillable`**: Thêm/Xóa các trường trong mảng `$fillable`.
 - **`casts()`**: Khai báo kiểu dữ liệu tự động (`datetime`, `immutable_datetime`, `boolean`, `array`, `json`, `decimal`).
 - **Relationships**: Khai báo các mối quan hệ Eloquent mới (`belongsTo`, `hasMany`, v.v.).
@@ -61,7 +60,7 @@ Tài liệu này quy định quy trình từng bước dành cho AI Agent để 
 
 ---
 
-## 3. Ví Dụ Mẫu Khi Thêm Trường Mới (`user_id`, `recorded_at`, `softDeletes`)
+## 3. Ví Dụ Mẫu Khi Thêm Trường Mới (`user_id`, `recorded_at`)
 
 ### A. File Migration (`package/database/migrations/2025_08_06_102920_eamo_create_equipment_parameter_logs_table.php`)
 ```php
@@ -74,21 +73,18 @@ Schema::create('eamo_equipment_parameter_logs', function (Blueprint $table) {
     $table->uuid('user_id')->nullable();
     $table->timestamp('recorded_at')->nullable();
     $table->timestamps();
-    $table->softDeletes();
 });
 ```
 
 ### B. File Model (`EquipmentParameterLog.php`)
 ```php
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 /**
  * @property string|null $user_id
  * @property CarbonImmutable|null $recorded_at
  */
 final class EquipmentParameterLog extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids;
 
     protected $fillable = [
         'equipment_id',

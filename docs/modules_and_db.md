@@ -236,9 +236,6 @@ erDiagram
         uuid user_id
         string value
         timestamp recorded_at
-        timestamp created_at
-        timestamp updated_at
-        timestamp deleted_at
     }
 ```
 

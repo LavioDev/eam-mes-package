@@ -9,7 +9,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\User\Infrastructure\Models\User;
 use Modules\Masterdata\Equipment\Models\Equipment;
 use Modules\Masterdata\Equipment\Models\EquipmentParameter;
@@ -31,11 +30,10 @@ use Modules\Masterdata\Equipment\Models\Unit;
  * @property-read User|null $user
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable $updated_at
- * @property CarbonImmutable|null $deleted_at
  */
 final class EquipmentParameterLog extends Model
 {
-    use HasUuids, HasDefaultRouteBinding, SoftDeletes;
+    use HasUuids, HasDefaultRouteBinding;
 
     public $incrementing = false;
 
