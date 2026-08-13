@@ -8,6 +8,12 @@ For detailed information about the submodules and the database schema structure,
 
 ---
 
+## Example Project
+
+For a real-world example of a project utilizing this package, please refer to the [EAMO (Enterprise Asset Management & Manufacturing Execution System)](https://github.com/eamo-mes) repository. EAMO integrates the package's modules (Checklist, Maintenance, Parameter Logs, and Error Monitoring) and demonstrates how to extend tables dynamically within a consuming Laravel application.
+
+---
+
 ## Installation
 
 Add the repository and requirement to your `composer.json`:
