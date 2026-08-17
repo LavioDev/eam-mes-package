@@ -23,6 +23,7 @@ it('can run all eamo migrations', function () {
         'eamo_equipment_error_logs',
         'eamo_maintenance_plans',
         'eamo_maintenance_schedules',
+        'eamo_maintenance_schedule_user',
         'eamo_maintenance_items',
         'eamo_maintenance_categories',
         'eamo_maintenance_logs',

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Equipment\Maintenance\Models;
 
-use App\Concerns\HasDefaultRouteBinding;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -49,7 +48,7 @@ final class MaintenancePlan extends Model
     //     });
     // }
 
-    use HasUuids, HasDefaultRouteBinding;
+    use HasUuids;
         
     protected $fillable = [
         'equipment_id',

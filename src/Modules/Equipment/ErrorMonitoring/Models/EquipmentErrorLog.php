@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Equipment\ErrorMonitoring\Models;
 
-use App\Concerns\HasDefaultRouteBinding;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -36,7 +35,7 @@ use Modules\Masterdata\Equipment\Models\EquipmentError;
  */
 final class EquipmentErrorLog extends Model
 {
-    use HasDefaultRouteBinding, HasUuids;
+    use HasUuids;
 
     public const MAX_LOG_RECORDS = 2000000;
 

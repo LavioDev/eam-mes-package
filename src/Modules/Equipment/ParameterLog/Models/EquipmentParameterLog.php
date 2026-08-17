@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Equipment\ParameterLog\Models;
 
-use App\Concerns\HasDefaultRouteBinding;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +32,7 @@ use Modules\Masterdata\Equipment\Models\Unit;
  */
 final class EquipmentParameterLog extends Model
 {
-    use HasUuids, HasDefaultRouteBinding;
+    use HasUuids;
 
     public $incrementing = false;
 

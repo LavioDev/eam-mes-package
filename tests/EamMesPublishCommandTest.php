@@ -62,7 +62,7 @@ it('can publish all submodules', function () {
     expect(File::exists(base_path('modules/Masterdata/Equipment/Register.php')))->toBeTrue();
 
     $migrationFiles = File::files(database_path('migrations'));
-    expect(count($migrationFiles))->toBe(18);
+    expect(count($migrationFiles))->toBe(19);
 });
 
 it('can publish an entire module equipment', function () {
@@ -77,7 +77,7 @@ it('can publish an entire module equipment', function () {
     expect(File::exists(base_path('modules/Masterdata/Equipment/Register.php')))->toBeFalse();
 
     $migrationFiles = File::files(database_path('migrations'));
-    expect(count($migrationFiles))->toBe(11); // 3 (checklist) + 1 (error-monitoring) + 5 (maintenance) + 1 (parameter-log) + 1 (management)
+    expect(count($migrationFiles))->toBe(12); // 3 (checklist) + 1 (error-monitoring) + 6 (maintenance) + 1 (parameter-log) + 1 (management)
 });
 
 it('can publish an entire module masterdata-equipment', function () {

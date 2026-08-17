@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\User\Infrastructure\Models\User;
-use App\Concerns\HasDefaultRouteBinding;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Modules\Masterdata\Equipment\Models\Equipment;
 use Modules\Equipment\Checklist\Models\ChecklistDetail;
@@ -23,7 +22,7 @@ use Modules\Equipment\Checklist\Models\ChecklistDetail;
  */
 final class ChecklistSession extends Model
 {
-    use HasUuids, HasDefaultRouteBinding;
+    use HasUuids;
 
     protected $table = 'eamo_checklist_sessions';
     public $incrementing = false;

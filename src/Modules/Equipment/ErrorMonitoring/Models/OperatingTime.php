@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Equipment\ErrorMonitoring\Models;
 
-use App\Concerns\HasDefaultRouteBinding;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -35,7 +34,7 @@ use Modules\Masterdata\Equipment\Models\Equipment;
 final class OperatingTime extends Model
 {
 
-    use HasDefaultRouteBinding, HasUuids;
+    use HasUuids;
 
     protected $fillable = [
 

@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Core\User\Infrastructure\Models\User;
 
 /**
- * @property int $id
+ * @property string $id
  * @property string $name
  * @property string|null $description
  * @property string $maintenance_category_id
@@ -27,26 +26,16 @@ class MaintenanceItem extends Model
     protected $fillable = [
         'name',
         'description',
-        'maintenance_category_id'
-        ,'user_id'
+        'maintenance_category_id',
     ];
-
-
 
     public function maintenanceCategory(): BelongsTo
     {
         return $this->belongsTo(MaintenanceCategory::class);
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
     public function maintenanceSchedules(): HasMany
     {
         return $this->hasMany(MaintenanceSchedule::class, 'maintenance_item_id');
     }
-
-
 }

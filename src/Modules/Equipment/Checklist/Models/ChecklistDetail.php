@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Masterdata\Checklist\Infrastructure\Models\Checklist;
-use App\Concerns\HasDefaultRouteBinding;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 /**
@@ -22,7 +21,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
  */
 final class ChecklistDetail extends Model
 {
-    use HasUuids, HasDefaultRouteBinding;
+    use HasUuids;
     public $incrementing = false;
     protected $keyType = 'string';
 

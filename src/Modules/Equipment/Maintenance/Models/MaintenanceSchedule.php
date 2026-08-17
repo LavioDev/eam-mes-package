@@ -7,10 +7,9 @@ namespace Modules\Equipment\Maintenance\Models;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use App\Concerns\HasDefaultRouteBinding;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Core\User\Infrastructure\Models\User;
 use Modules\Masterdata\Equipment\Models\Equipment;
 
@@ -21,6 +20,8 @@ use Modules\Masterdata\Equipment\Models\Equipment;
  * @property string $maintenance_item_id
  * @property string $maintenance_plan_id
  * @property CarbonImmutable $date
+ * @property bool $is_rescheduled
+ * @property CarbonImmutable|null $original_date
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable $updated_at
  * @method static MaintenanceScheduleBuilder query()
@@ -29,19 +30,19 @@ final class MaintenanceSchedule extends Model
 {
     protected $table = 'eamo_maintenance_schedules';
 
-    use HasUuids, HasDefaultRouteBinding;
+    use HasUuids;
 
     protected $fillable = [
         'equipment_id',
         'maintenance_item_id',
         'maintenance_plan_id',
         'date',
-        'user_id',
         'is_rescheduled',
         'original_date',
     ];
 
     protected $casts = [
+        'is_rescheduled' => 'boolean',
     ];
 
     public function maintenancePlan(): BelongsTo
@@ -69,12 +70,13 @@ final class MaintenanceSchedule extends Model
         return $this->hasMany(MaintenanceLog::class, 'maintenance_schedule_id');
     }
 
-    public function user(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(
+            User::class,
+            'eamo_maintenance_schedule_user',
+            'maintenance_schedule_id',
+            'user_id'
+        );
     }
-
-
-
-
 }

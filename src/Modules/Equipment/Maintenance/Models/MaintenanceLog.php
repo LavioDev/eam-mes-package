@@ -8,7 +8,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use App\Concerns\HasDefaultRouteBinding;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\File\Infrastructure\Models\ObjectFile;
 use Modules\Masterdata\Equipment\Infrastructure\Models\Equipment;
@@ -29,7 +28,7 @@ final class MaintenanceLog extends Model
 {
     protected $table = 'eamo_maintenance_logs';
 
-    use HasUuids, HasDefaultRouteBinding;
+    use HasUuids;
 
     protected $fillable = [
         'maintenance_item_id',

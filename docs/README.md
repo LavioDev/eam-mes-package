@@ -30,7 +30,7 @@ sản xuất (Manufacturing Execution System) và quản lý thiết bị (Equip
 | `core` | `eamo_extension_requests` | Quản lý yêu cầu mở rộng bảng (bảng lưu request API) |
 | `checklist` | `eamo_checklist_sessions`, `eamo_checklist_details` | Quản lý kiểm tra thiết bị |
 | `error-monitoring` | `eamo_equipment_error_logs`, `eamo_operating_times` | Theo dõi lỗi thiết bị |
-| `maintenance` | `eamo_maintenance_plans`, `eamo_maintenance_schedules`, `eamo_maintenance_items`, `eamo_maintenance_categories`, `eamo_maintenance_logs` | Quản lý bảo trì |
+| `maintenance` | `eamo_maintenance_plans`, `eamo_maintenance_schedules`, `eamo_maintenance_schedule_user`, `eamo_maintenance_items`, `eamo_maintenance_categories`, `eamo_maintenance_logs` | Quản lý bảo trì |
 | `parameter-log` | `eamo_equipment_parameter_logs` | Ghi log thông số vận hành |
 
 ### Artisan Commands

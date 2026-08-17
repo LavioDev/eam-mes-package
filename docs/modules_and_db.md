@@ -17,7 +17,7 @@ Tài liệu này phản ánh schema thực tế trong `database/migrations` củ
 | Masterdata Equipment | `eamo_units`, `eamo_equipment_parameters` | Thông số và đơn vị đo | Unit → Equipment parameters |
 | Masterdata Equipment | `eamo_equipment_errors` | Danh mục lỗi (được gán trực tiếp qua bản ghi định nghĩa trong `eamo_equipment_error_logs` với `occurred_at IS NULL`) | Equipment error mapping |
 | Checklist | `eamo_checklist_sessions`, `eamo_checklist_details`, `eamo_checklist_schedules`, `eamo_checklist_logs` | Lập lịch và thực hiện checklist | Session → Detail / Schedule → Log |
-| Maintenance | `eamo_maintenance_categories`, `eamo_maintenance_items`, `eamo_maintenance_plans`, `eamo_maintenance_schedules`, `eamo_maintenance_logs` | Lập kế hoạch và log bảo trì | Category → Item / Plan → Schedule → Log |
+| Maintenance | `eamo_maintenance_categories`, `eamo_maintenance_items`, `eamo_maintenance_plans`, `eamo_maintenance_schedules`, `eamo_maintenance_schedule_user`, `eamo_maintenance_logs` | Lập kế hoạch và log bảo trì | Category → Item / Plan → Schedule → Log / Schedule ↔ User |
 | Error Monitoring | `eamo_equipment_error_logs`, `eamo_operating_times` | Log lỗi và vận hành | Bảng log độc lập |
 | Parameter Log | `eamo_equipment_parameter_logs` | Timeseries thông số | Bảng log độc lập |
 | Extension | `eamo_extension_requests` | Theo dõi migration động | Bảng độc lập |
@@ -155,9 +155,10 @@ erDiagram
 | Bảng | Model | Cột liên kết ngoài module |
 |---|---|---|
 | `eamo_maintenance_categories` | `MaintenanceCategory` | — |
-| `eamo_maintenance_items` | `MaintenanceItem` | `user_id` |
+| `eamo_maintenance_items` | `MaintenanceItem` | — |
 | `eamo_maintenance_plans` | `MaintenancePlan` | `equipment_id`, `user_id` |
-| `eamo_maintenance_schedules` | `MaintenanceSchedule` | `equipment_id`, `user_id` |
+| `eamo_maintenance_schedules` | `MaintenanceSchedule` | `equipment_id` |
+| `eamo_maintenance_schedule_user` | — | `user_id` |
 | `eamo_maintenance_logs` | `MaintenanceLog` | — |
 
 ```mermaid
@@ -166,6 +167,7 @@ erDiagram
     eamo_maintenance_categories ||--o{ eamo_maintenance_plans : classifies
     eamo_maintenance_plans ||--o{ eamo_maintenance_schedules : generates
     eamo_maintenance_items ||--o{ eamo_maintenance_schedules : schedules
+    eamo_maintenance_schedules ||--o{ eamo_maintenance_schedule_user : assigns
     eamo_maintenance_schedules ||--o{ eamo_maintenance_logs : records
 
     eamo_maintenance_plans {
@@ -184,10 +186,13 @@ erDiagram
         uuid maintenance_plan_id FK
         uuid maintenance_item_id FK
         uuid equipment_id
-        uuid user_id
         date date
         boolean is_rescheduled
         date original_date
+    }
+    eamo_maintenance_schedule_user {
+        uuid maintenance_schedule_id PK, FK
+        uuid user_id PK
     }
 ```
 
@@ -247,6 +252,6 @@ erDiagram
 
 ## 5. Kiểm tra schema
 
-- Package tạo 21 bảng và có model tương ứng.
+- Package tạo các bảng chuẩn và có model tương ứng.
 - Migration được kiểm tra bằng `tests/EamMesMigrationsTest.php`.
 - Các bảng có `user_id` giả định host app đã có `users.id` kiểu UUID.
