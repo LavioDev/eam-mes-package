@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }}\Services;
+
+use {{ namespace }}\Models\{{ model }};
+
+final class {{ model }}Service
+{
+    public function create(array $data): {{ model }}
+    {
+        return {{ model }}::query()->create($data);
+    }
+
+    public function update(string $id, array $data): {{ model }}
+    {
+        $item = {{ model }}::query()->findOrFail($id);
+        $item->update($data);
+
+        return $item;
+    }
+
+    public function delete(string $id): void
+    {
+        $item = {{ model }}::query()->findOrFail($id);
+        $item->delete();
+    }
+}

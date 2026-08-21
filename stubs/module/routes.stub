@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+use Illuminate\Support\Facades\Route;
+use {{ namespace }}\Actions\Delete{{ model }}Action;
+use {{ namespace }}\Actions\Index{{ model }}Action;
+use {{ namespace }}\Actions\Show{{ model }}Action;
+use {{ namespace }}\Actions\Store{{ model }}Action;
+use {{ namespace }}\Actions\Update{{ model }}Action;
+
+Route::group([
+    'prefix' => config('eam.api.prefix', 'eam/api') . '/v1/{{ route_prefix }}',
+    'middleware' => config('eam.api.middleware', ['api', 'auth:api']),
+], function () {
+    Route::get('/', Index{{ model }}Action::class);
+    Route::post('/', Store{{ model }}Action::class);
+    Route::get('/{id}', Show{{ model }}Action::class);
+    Route::put('/{id}', Update{{ model }}Action::class);
+    Route::delete('/{id}', Delete{{ model }}Action::class);
+});

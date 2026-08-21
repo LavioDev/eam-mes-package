@@ -13,10 +13,10 @@ Tài liệu này quy định quy trình từng bước dành cho AI Agent để 
 2. **Cập Nhật Đồng Bộ Toàn Bộ Luồng (End-to-End Layer Sync)**:
    Mỗi khi thay đổi/thêm/bớt cột của 1 bảng DB, Agent **BẮT BUỘC** phải rà soát và cập nhật đồng thời các thành phần sau:
    - **Migration**: `package/database/migrations/`
+   - **Module Provider**: `package/src/Modules/.../Register.php` (kế thừa `AbstractModuleProvider` và khai báo file migration mới trong `getMigrations()`)
    - **Eloquent Model**: `package/src/Modules/.../Models/`
    - **Form Requests**: `package/src/Modules/.../Requests/`
    - **Actions / Controllers**: `package/src/Modules/.../Actions/`
-   - **Publish Command**: `package/src/Commands/EamMesPublishCommand.php`
    - **Tài Liệu**: `package/docs/modules_and_db.md` & `package/README.md`
    - **Unit Tests**: `package/tests/`
 

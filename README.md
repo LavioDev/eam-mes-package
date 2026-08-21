@@ -72,7 +72,7 @@ php artisan eam-mes:publish --all
 php artisan eam-mes:publish --module=equipment
 php artisan eam-mes:publish --module=masterdata-equipment
 
-# Publish a specific submodule of Equipment
+# Publish a specific submodule
 php artisan eam-mes:publish --submodule=checklist
 php artisan eam-mes:publish --submodule=error-monitoring
 php artisan eam-mes:publish --submodule=maintenance
@@ -82,6 +82,29 @@ php artisan eam-mes:publish --submodule=management
 
 Available modules: `equipment`, `masterdata-equipment`.
 Available submodules of Equipment: `checklist`, `error-monitoring`, `maintenance`, `parameter-log`, `management`.
+
+---
+
+## Module Generator CLI
+
+The package provides a built-in scaffolding CLI command to rapidly generate new submodules following package architecture conventions:
+
+```bash
+# Generate a new submodule with basic scaffold (Register, routes, Model, Migration)
+php artisan eam:make-module Equipment Tooling
+
+# Generate a new submodule with complete CRUD Actions, Form Requests, and Service
+php artisan eam:make-module Equipment Tooling --model=ToolingMold --crud
+
+# Overwrite existing files if needed
+php artisan eam:make-module Equipment Tooling --crud --force
+```
+
+### Module Auto-Discovery
+
+Modules created under `src/Modules/{Domain}/{Submodule}` extending `AbstractModuleProvider` are **automatically discovered and registered** when the application boots. No manual provider registration in `config/app.php` is needed for new modules.
+
+For detailed architecture details, refer to the [Module Generator & Registration Architecture RFC](docs/rfc_module_generator_and_registration.md).
 
 ---
 

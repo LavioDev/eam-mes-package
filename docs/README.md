@@ -7,6 +7,7 @@
 | [Modules & Database Structure](modules_and_db.md) | Mô tả các submodule và sơ đồ ERD database |
 | [Dynamic Table Extension](dynamic_table_extension.md) | Cơ chế mở rộng schema động — ý tưởng, kiến trúc, hướng dẫn triển khai |
 | [HTTP Table Extension Plan](http_extension_plan.md) | Kế hoạch tích hợp chức năng thêm trường qua API HTTP (Auto Queue) |
+| [Module Generator & Registration RFC](rfc_module_generator_and_registration.md) | Kiến trúc Module Engine, Auto-Discovery & CLI Generator (`eam:make-module`) |
 
 ---
 
@@ -19,8 +20,10 @@ sản xuất (Manufacturing Execution System) và quản lý thiết bị (Equip
 
 | Tính năng | Mô tả |
 |---|---|
-| **Base Migrations** | Các bảng chuẩn `eamo_*` cho 4 submodule |
-| **Submodule Publishing** | `eam-mes:publish` — copy code files vào ứng dụng |
+| **Base Migrations** | Các bảng chuẩn `eamo_*` cho các submodule |
+| **Module Engine & Auto-Discovery** | Tự động phát hiện và nạp routes/services từ `AbstractModuleProvider` |
+| **Module Generator CLI** | `eam:make-module` — sinh nhanh bộ scaffolding cho module mới |
+| **Submodule Publishing** | `eam-mes:publish` — xuất bản code và migration động sang Host App |
 | **Dynamic Table Extension** | `eam:sync-extensions` — sinh migration bổ sung trường |
 
 ### Submodules
@@ -37,9 +40,10 @@ sản xuất (Manufacturing Execution System) và quản lý thiết bị (Equip
 
 | Command | Mô tả |
 |---|---|
+| `eam:make-module {domain} {submodule}` | Sinh khung code module mới (Register, routes, Model, Migration, CRUD Actions) |
 | `eam-mes:publish --all` | Publish tất cả các module và submodule vào ứng dụng |
 | `eam-mes:publish --module=<name>` | Publish một module cụ thể (`equipment`, `masterdata-equipment`) |
-| `eam-mes:publish --submodule=<name>` | Publish một submodule cụ thể của Equipment (`checklist`, `error-monitoring`, `maintenance`, `parameter-log`, `management`) |
+| `eam-mes:publish --submodule=<name>` | Publish một submodule cụ thể (`checklist`, `error-monitoring`, `maintenance`, `parameter-log`, `management`) |
 | `eam:sync-extensions` | Sinh migration từ các Extension class đã đăng ký |
 | `eam:sync-extensions --dry-run` | Xem trước không ghi file |
 | `eam:sync-extensions --migrate` | Sinh file và chạy migrate luôn |

@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }}\Actions;
+
+use Illuminate\Http\JsonResponse;
+use Lorisleiva\Actions\Concerns\AsAction;
+use {{ namespace }}\Models\{{ model }};
+
+final class Show{{ model }}Action
+{
+    use AsAction;
+
+    public function asController(string $id): JsonResponse
+    {
+        $item = {{ model }}::query()->findOrFail($id);
+
+        return response()->json($item);
+    }
+}

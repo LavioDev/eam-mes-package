@@ -71,4 +71,19 @@ return [
         'name'       => env('EAM_QUEUE_NAME', 'eam-extensions'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Submodules Settings
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for submodule auto-discovery and activation.
+    |
+    */
+
+    'modules' => [
+        'discovery' => env('EAM_MODULE_DISCOVERY', true),
+        'disabled'  => [],
+    ],
+
 ];
+

@@ -1,88 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Spatie\LaravelPackageTools\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Spatie\LaravelPackageTools\Modules\AbstractModuleProvider;
+use Spatie\LaravelPackageTools\Modules\ModuleRegistry;
 
 class EamMesPublishCommand extends Command
 {
-    protected $signature = 'eam-mes:publish 
-                            {--all : Publish all modules and submodules (including core)}
-                            {--module= : Publish a specific module (equipment, masterdata-equipment)}
-                            {--submodule= : Publish a specific submodule (checklist, error-monitoring, maintenance, parameter-log, management)}';
+    protected $signature = 'eam-mes:publish
+                            {--all : Publish all registered modules and core migrations}
+                            {--module= : Publish all submodules under a specific domain (e.g. equipment, masterdata-equipment)}
+                            {--submodule= : Publish a specific submodule (e.g. checklist, error-monitoring, maintenance, parameter-log, management, equipment, masterdata-equipment)}';
 
-    protected $description = 'Publish code files (models, actions, requests, routes) and migrations for EAM MES modules to the main application';
+    protected $description = 'Publish code files and migrations for EAM MES modules to the main application';
 
-    protected array $submodules = [
-        'core' => [
-            'name' => 'Core',
-            'migrations' => [
-                '2026_07_05_000000_create_eamo_extension_requests_table.php',
-            ],
-            'source_dir' => '',
-        ],
-        'checklist' => [
-            'name' => 'Checklist',
-            'migrations' => [
-                '2025_08_05_113908_eamo_create_checklist_sessions_table.php',
-                '2025_08_05_113910_eamo_create_checklist_details_table.php',
-                '2025_11_11_134736_eamo_create_operating_times_table.php',
-            ],
-            'source_dir' => 'Equipment/Checklist',
-            'dest_dir' => 'modules/Equipment/Checklist',
-        ],
-        'error-monitoring' => [
-            'name' => 'ErrorMonitoring',
-            'migrations' => [
-                '2025_08_06_105535_eamo_create_equipment_error_logs_table.php',
-            ],
-            'source_dir' => 'Equipment/ErrorMonitoring',
-            'dest_dir' => 'modules/Equipment/ErrorMonitoring',
-        ],
-        'maintenance' => [
-            'name' => 'Maintenance',
-            'migrations' => [
-                '2025_08_06_161000_eamo_create_maintenance_categories_table.php',
-                '2025_08_06_161100_eamo_create_maintenance_items_table.php',
-                '2025_08_06_161200_eamo_create_maintenance_plans_table.php',
-                '2025_08_06_161300_eamo_create_maintenance_schedules_table.php',
-                '2025_08_06_161350_eamo_create_maintenance_schedule_user_table.php',
-                '2025_08_06_161400_eamo_create_maintenance_logs_table.php',
-            ],
-            'source_dir' => 'Equipment/Maintenance',
-            'dest_dir' => 'modules/Equipment/Maintenance',
-        ],
-        'parameter-log' => [
-            'name' => 'ParameterLog',
-            'migrations' => [
-                '2025_08_06_102920_eamo_create_equipment_parameter_logs_table.php',
-            ],
-            'source_dir' => 'Equipment/ParameterLog',
-            'dest_dir' => 'modules/Equipment/ParameterLog',
-        ],
-        'management' => [
-            'name' => 'Management',
-            'migrations' => [
-                '2025_08_04_100000_eamo_seed_short_stop_equipment_error_for_iot_equipment.php',
-            ],
-            'source_dir' => 'Equipment/Management',
-            'dest_dir' => 'modules/Equipment/Management',
-        ],
-        'masterdata-equipment' => [
-            'name' => 'MasterdataEquipment',
-            'migrations' => [
-                '2025_06_22_080000_eamo_create_eamo_equipment_categories_table.php',
-                '2025_06_23_084823_eamo_create_eamo_equipment_table.php',
-                '2025_06_23_084824_eamo_create_eamo_equipment_states_table.php',
-                '2025_06_23_084825_eamo_create_eamo_equipment_images_table.php',
-                '2025_07_03_095341_eamo_create_eamo_equipment_parameters_table.php',
-                '2025_07_03_120000_eamo_create_eamo_equipment_errors_table.php',
-            ],
-            'source_dir' => 'Masterdata/Equipment',
-            'dest_dir' => 'modules/Masterdata/Equipment',
-        ],
-    ];
+    public function __construct(
+        private readonly ModuleRegistry $registry
+    ) {
+        parent::__construct();
+    }
 
     public function handle(): int
     {
@@ -90,90 +30,159 @@ class EamMesPublishCommand extends Command
         $module = $this->option('module');
         $submodule = $this->option('submodule');
 
-        if (!$all && !$module && !$submodule) {
+        if (! $all && ! $module && ! $submodule) {
             $this->error('Please specify either --all, --module=<name>, or --submodule=<name>.');
-            return 1;
+
+            return self::FAILURE;
         }
 
+        $modules = $this->registry->all();
+
         if ($all) {
-            foreach ($this->submodules as $key => $config) {
-                $this->publishSubmodule($key);
+            $this->publishCore();
+            $this->publishManagement();
+            foreach ($modules as $provider) {
+                $this->publishModule($provider);
             }
-            return 0;
+
+            return self::SUCCESS;
         }
 
         if ($module) {
-            $module = strtolower($module);
-            if ($module === 'equipment') {
-                $keys = ['checklist', 'error-monitoring', 'maintenance', 'parameter-log', 'management'];
-                foreach ($keys as $key) {
-                    $this->publishSubmodule($key);
+            $target = strtolower((string) $module);
+
+            if ($target === 'equipment') {
+                $matched = $modules->filter(fn (AbstractModuleProvider $p) => strtolower($p->getDomain()) === 'equipment');
+                foreach ($matched as $provider) {
+                    $this->publishModule($provider);
                 }
-                return 0;
+                $this->publishManagement();
+
+                return self::SUCCESS;
             }
-            if ($module === 'masterdata-equipment') {
-                $this->publishSubmodule('masterdata-equipment');
-                return 0;
+
+            if ($target === 'masterdata-equipment' || $target === 'masterdata') {
+                $matched = $modules->filter(fn (AbstractModuleProvider $p) => strtolower($p->getDomain()) === 'masterdata' || $p->getIdentifier() === 'masterdata.equipment');
+                foreach ($matched as $provider) {
+                    $this->publishModule($provider);
+                }
+
+                return self::SUCCESS;
             }
-            $this->error("Module '{$module}' not found. Available modules: equipment, masterdata-equipment");
-            return 1;
+
+            $matched = $modules->filter(fn (AbstractModuleProvider $p) => strtolower($p->getDomain()) === $target);
+            if ($matched->isEmpty()) {
+                $this->error("No submodules found under domain '{$module}'.");
+
+                return self::FAILURE;
+            }
+
+            foreach ($matched as $provider) {
+                $this->publishModule($provider);
+            }
+
+            return self::SUCCESS;
         }
 
         if ($submodule) {
-            $submodule = strtolower($submodule);
-            // Legacy/Alias mapping
-            if ($submodule === 'equipment') {
-                $submodule = 'management';
-            }
-            if ($submodule === 'masterdata-equipment') {
-                $this->publishSubmodule('masterdata-equipment');
-                return 0;
+            $target = strtolower((string) $submodule);
+
+            if ($target === 'core') {
+                $this->publishCore();
+
+                return self::SUCCESS;
             }
 
-            if (!array_key_exists($submodule, $this->submodules)) {
-                $this->error("Submodule '{$submodule}' not found. Available submodules: checklist, error-monitoring, maintenance, parameter-log, management");
-                return 1;
+            // Legacy alias: 'equipment' or 'management'
+            if ($target === 'equipment' || $target === 'management') {
+                $this->publishManagement();
+
+                return self::SUCCESS;
             }
 
-            $this->publishSubmodule($submodule);
-            return 0;
+            // Legacy alias: 'masterdata-equipment'
+            if ($target === 'masterdata-equipment') {
+                $provider = $modules->get('masterdata.equipment');
+                if ($provider) {
+                    $this->publishModule($provider);
+
+                    return self::SUCCESS;
+                }
+            }
+
+            $provider = $modules->first(function (AbstractModuleProvider $p) use ($target) {
+                return strtolower($p->getName()) === $target
+                    || $p->getIdentifier() === $target
+                    || str_replace('.', '-', $p->getIdentifier()) === $target
+                    || strtolower(str_replace(' ', '', $p->getName())) === str_replace('-', '', $target);
+            });
+
+            if (! $provider) {
+                $this->error("Submodule '{$submodule}' not found.");
+
+                return self::FAILURE;
+            }
+
+            $this->publishModule($provider);
+
+            return self::SUCCESS;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
-    protected function publishSubmodule(string $key): void
+    protected function publishCore(): void
     {
-        $config = $this->submodules[$key];
-        $this->info("Publishing submodule: {$config['name']}...");
+        $this->info('Publishing Core migrations...');
+        $coreMigrations = [
+            '2026_07_05_000000_create_eamo_extension_requests_table.php',
+        ];
 
-        // 1. Copy php files if source_dir is present
-        if (!empty($config['source_dir'])) {
-            $sourcePath = __DIR__ . '/../Modules/' . $config['source_dir'];
-            $destPath = base_path($config['dest_dir'] ?? ('modules/Equipment/' . $config['name']));
+        $this->copyMigrations($coreMigrations);
+    }
 
-            if (File::exists($sourcePath)) {
-                File::ensureDirectoryExists(dirname($destPath));
-                File::copyDirectory($sourcePath, $destPath);
-                $this->line(" - Copied code files to [{$config['dest_dir']}]");
-            } else {
-                $this->warn(" - Source code directory not found at {$sourcePath}");
-            }
+    protected function publishManagement(): void
+    {
+        $this->info('Publishing Management migrations...');
+        $managementMigrations = [
+            '2025_08_04_100000_eamo_seed_short_stop_equipment_error_for_iot_equipment.php',
+        ];
+
+        $this->copyMigrations($managementMigrations);
+    }
+
+    protected function publishModule(AbstractModuleProvider $provider): void
+    {
+        $this->info("Publishing submodule: [{$provider->getDomain()}/{$provider->getName()}]...");
+
+        $sourcePath = $provider->getModulePath();
+        $destPath = base_path("modules/{$provider->getDomain()}/{$provider->getName()}");
+
+        if (File::exists($sourcePath)) {
+            File::ensureDirectoryExists(dirname($destPath));
+            File::copyDirectory($sourcePath, $destPath);
+            $this->line(" - Copied code files to [modules/{$provider->getDomain()}/{$provider->getName()}]");
+        } else {
+            $this->warn(" - Source code directory not found at {$sourcePath}");
         }
 
-        // 2. Copy migrations to database/migrations
+        $this->copyMigrations($provider->getMigrations());
+
+        $this->info("Submodule [{$provider->getDomain()}/{$provider->getName()}] published successfully.");
+    }
+
+    protected function copyMigrations(array $migrations): void
+    {
         $migrationsSourcePath = __DIR__ . '/../../database/migrations';
         $migrationsDestPath = database_path('migrations');
         $baseTime = time();
 
-        foreach ($config['migrations'] as $index => $migrationFile) {
+        foreach ($migrations as $index => $migrationFile) {
             $srcFile = $migrationsSourcePath . '/' . $migrationFile;
             if (File::exists($srcFile)) {
                 $cleanName = preg_replace('/^\d{4}_\d{2}_\d{2}_\d{6}_/', '', $migrationFile);
-                // Increment time by index seconds to preserve chronological ordering
                 $destFile = $migrationsDestPath . '/' . date('Y_m_d_His', $baseTime + $index) . '_' . $cleanName;
 
-                // Avoid duplicate publication if it contains the clean name
                 $exists = false;
                 if (File::exists($migrationsDestPath)) {
                     foreach (File::files($migrationsDestPath) as $file) {
@@ -184,7 +193,7 @@ class EamMesPublishCommand extends Command
                     }
                 }
 
-                if (!$exists) {
+                if (! $exists) {
                     File::ensureDirectoryExists($migrationsDestPath);
                     File::copy($srcFile, $destFile);
                     $this->line(" - Published migration [{$cleanName}] to database/migrations/");
@@ -193,9 +202,5 @@ class EamMesPublishCommand extends Command
                 }
             }
         }
-
-        $this->info("Submodule {$config['name']} published successfully.");
     }
 }
-
-

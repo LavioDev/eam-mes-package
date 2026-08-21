@@ -4,34 +4,24 @@ declare(strict_types=1);
 
 namespace Modules\Equipment\ErrorMonitoring;
 
-use App\Providers\IModuleProvider;
-use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Modules\AbstractModuleProvider;
 
-final class Register extends ServiceProvider implements IModuleProvider
+final class Register extends AbstractModuleProvider
 {
-    public function seed(): void
+    public function getDomain(): string
     {
-        // No seeders
+        return 'Equipment';
     }
 
-    public function getRoutePath(): string
+    public function getName(): string
     {
-        return __DIR__ . '/routes.php';
+        return 'ErrorMonitoring';
     }
 
-    public function getMigrationPath(): string
+    public function getMigrations(): array
     {
-        return __DIR__ . '/Migrations';
-    }
-
-    public function registerPolicies(): void
-    {
-        // TODO: Register policies here
-        // Gate::policy(Model::class, ModelPolicy::class);
-    }
-
-    public function boot(): void
-    {
-        // TODO: Add boot logic here
+        return [
+            '2025_08_06_105535_eamo_create_equipment_error_logs_table.php',
+        ];
     }
 }

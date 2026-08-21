@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Equipment\Checklist;
+namespace {{ namespace }};
 
 use Spatie\LaravelPackageTools\Modules\AbstractModuleProvider;
 
@@ -10,20 +10,18 @@ final class Register extends AbstractModuleProvider
 {
     public function getDomain(): string
     {
-        return 'Equipment';
+        return '{{ domain }}';
     }
 
     public function getName(): string
     {
-        return 'Checklist';
+        return '{{ submodule }}';
     }
 
     public function getMigrations(): array
     {
         return [
-            '2025_08_05_113908_eamo_create_checklist_sessions_table.php',
-            '2025_08_05_113910_eamo_create_checklist_details_table.php',
-            '2025_11_11_134736_eamo_create_operating_times_table.php',
+            '{{ migration_file }}',
         ];
     }
 }

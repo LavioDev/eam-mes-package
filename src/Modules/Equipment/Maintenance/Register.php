@@ -4,34 +4,29 @@ declare(strict_types=1);
 
 namespace Modules\Equipment\Maintenance;
 
-use App\Providers\IModuleProvider;
-use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Modules\AbstractModuleProvider;
 
-final class Register extends ServiceProvider implements IModuleProvider
+final class Register extends AbstractModuleProvider
 {
-    public function seed(): void
+    public function getDomain(): string
     {
-        // No seeders
+        return 'Equipment';
     }
 
-    public function getRoutePath(): string
+    public function getName(): string
     {
-        return __DIR__ . '/routes.php';
+        return 'Maintenance';
     }
 
-    public function getMigrationPath(): string
+    public function getMigrations(): array
     {
-        return __DIR__ . '/Migrations';
-    }
-
-    public function registerPolicies(): void
-    {
-        // TODO: Register policies here
-        // Gate::policy(Model::class, ModelPolicy::class);
-    }
-
-    public function boot(): void
-    {
-        // TODO: Add boot logic here
+        return [
+            '2025_08_06_161000_eamo_create_maintenance_categories_table.php',
+            '2025_08_06_161100_eamo_create_maintenance_items_table.php',
+            '2025_08_06_161200_eamo_create_maintenance_plans_table.php',
+            '2025_08_06_161300_eamo_create_maintenance_schedules_table.php',
+            '2025_08_06_161350_eamo_create_maintenance_schedule_user_table.php',
+            '2025_08_06_161400_eamo_create_maintenance_logs_table.php',
+        ];
     }
 }

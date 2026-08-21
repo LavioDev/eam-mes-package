@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }}\Actions;
+
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Lorisleiva\Actions\Concerns\AsAction;
+use {{ namespace }}\Models\{{ model }};
+
+final class Index{{ model }}Action
+{
+    use AsAction;
+
+    public function asController(Request $request): JsonResponse
+    {
+        $perPage = (int) $request->input('per_page', 15);
+        $items = {{ model }}::query()->paginate($perPage);
+
+        return response()->json($items);
+    }
+}

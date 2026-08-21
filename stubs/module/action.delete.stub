@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }}\Actions;
+
+use Illuminate\Http\JsonResponse;
+use Lorisleiva\Actions\Concerns\AsAction;
+use {{ namespace }}\Services\{{ model }}Service;
+
+final class Delete{{ model }}Action
+{
+    use AsAction;
+
+    public function __construct(
+        private readonly {{ model }}Service $service
+    ) {}
+
+    public function asController(string $id): JsonResponse
+    {
+        $this->service->delete($id);
+
+        return response()->json(['message' => 'Deleted successfully']);
+    }
+}

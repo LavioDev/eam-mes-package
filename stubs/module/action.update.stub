@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }}\Actions;
+
+use Illuminate\Http\JsonResponse;
+use Lorisleiva\Actions\Concerns\AsAction;
+use {{ namespace }}\Requests\Update{{ model }}Request;
+use {{ namespace }}\Services\{{ model }}Service;
+
+final class Update{{ model }}Action
+{
+    use AsAction;
+
+    public function __construct(
+        private readonly {{ model }}Service $service
+    ) {}
+
+    public function asController(Update{{ model }}Request $request, string $id): JsonResponse
+    {
+        $item = $this->service->update($id, $request->validated());
+
+        return response()->json($item);
+    }
+}
